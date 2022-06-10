@@ -1,0 +1,5 @@
+<div class="playerPart" *ngIf="player">
+  <div class="playerName"> {{ player.seed }} - {{ player.name }} </div>
+  <div> {{ this.score }} </div>
+  <button *ngIf="this.canWin" (click)="this.playerWon()">WIN</button>
+</div>

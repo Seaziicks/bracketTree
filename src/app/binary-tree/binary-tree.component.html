@@ -1,0 +1,41 @@
+<p>binary-tree works!</p>
+<p> nbNodes : {{ this.nbNodes }} </p>
+<p> depth : {{ this.depth }} </p>
+<p> rounds : {{ this.rounds }} </p>
+
+<!-- https://github.com/warisgeek/AngularBinaryTree -->
+<div class="tree">
+  <ul>
+
+    <ng-template #recursiveList let-node>
+
+      <li [class.isWinnerNode]="node.winner != undefined">
+        <div class="node" [class.nodeDone]="node.winner !== undefined">
+          <div class="playerWrapper">
+            <div class="player" [class.isWinner]="node.winner === node.value1" *ngIf="node.value1.name !== ''">
+              <app-tree-player [player]="node.value1" [canWin]="node.value1.name !== '' && node.value2.name !==''"
+                               (playerWonEvent)="this.setWinner(node, $event)"></app-tree-player>
+            </div>
+            <span class="vertical-line" *ngIf="node.value1.name !== '' && node.value2.name !==''"></span>
+            <div class="player" [class.isWinner]="node.winner === node.value2" *ngIf="node.value2.name !== ''">
+              <app-tree-player [player]="node.value2" [canWin]="node.value1.name !== '' && node.value2.name !==''"
+                               (playerWonEvent)="this.setWinner(node, $event)"></app-tree-player>
+            </div>
+          </div>
+        </div>
+
+        <ul *ngIf="node.rightChild !== undefined || node.leftChild !== undefined" [class.hasTwoWinnerNode]="node.leftChild.winner !== undefined && node.rightChild.winner !== undefined">
+          <ng-template [ngIf]="node.leftChild !== undefined">
+            <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: node.leftChild }"></ng-container>
+          </ng-template>
+          <ng-template [ngIf]="node.rightChild !== undefined">
+            <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: node.rightChild }"></ng-container>
+          </ng-template>
+        </ul>
+      </li>
+    </ng-template>
+
+    <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: this.personalBracket }"></ng-container>
+
+  </ul>
+</div>
