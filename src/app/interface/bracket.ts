@@ -87,20 +87,24 @@ export class Bracket implements DoubleBinaryLeaf<Player> {
     if (depth < this.maxDepth && !added) {
       if (this.value1.seed === bracketSeedOpponent) {
         if (this.leftChild === undefined) {
-          this.leftChild = new Bracket(this.value1.clone(), new Player(nextOpponentSeed, "" + nextOpponentSeed), this, this.maxDepth);
+          this.leftChild = new Bracket(this.value1.clone(), Bracket.getFirstOpponent(this.value1, depth + 1), this, this.maxDepth);
+          this.value1.name = "";
           return true;
         }
         if (this.rightChild === undefined) {
-          this.rightChild = new Bracket(this.value1.clone(), new Player(nextOpponentSeed, "" + nextOpponentSeed), this, this.maxDepth);
+          this.rightChild = new Bracket(this.value1.clone(), Bracket.getFirstOpponent(this.value1, depth + 1), this, this.maxDepth);
+          this.value1.name = "";
           return true;
         }
       } else if (this.value2.seed === bracketSeedOpponent) {
         if (this.leftChild === undefined) {
-          this.leftChild = new Bracket(this.value2.clone(), new Player(nextOpponentSeed, "" + nextOpponentSeed), this, this.maxDepth);
+          this.leftChild = new Bracket(this.value2.clone(), Bracket.getFirstOpponent(this.value2, depth + 1), this, this.maxDepth);
+          this.value2.name = "";
           return true;
         }
         if (this.rightChild === undefined) {
-          this.rightChild = new Bracket(this.value2.clone(), new Player(nextOpponentSeed, "" + nextOpponentSeed), this, this.maxDepth);
+          this.rightChild = new Bracket(this.value2.clone(), Bracket.getFirstOpponent(this.value2, depth + 1), this, this.maxDepth);
+          this.value2.name = "";
           return true;
         }
       }
