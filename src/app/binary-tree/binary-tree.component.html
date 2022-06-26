@@ -2,6 +2,7 @@
 <p> nbNodes : {{ this.nbNodes }} </p>
 <p> depth : {{ this.depth }} </p>
 <p> rounds : {{ this.rounds }} </p>
+<p> maxBracketDepth : {{ this.maxBracketDepth }} </p>
 
 <!-- https://github.com/warisgeek/AngularBinaryTree -->
 <div class="tree">
@@ -24,7 +25,7 @@
           </div>
         </div>
 
-        <ul *ngIf="node.rightChild !== undefined || node.leftChild !== undefined" [class.hasTwoWinnerNode]="node.leftChild.winner !== undefined && node.rightChild.winner !== undefined">
+        <ul *ngIf="node.rightChild !== undefined || node.leftChild !== undefined" [class.hasTwoWinnerNode]="node.leftChild && node.rightChild && node.leftChild.winner !== undefined && node.rightChild.winner !== undefined">
           <ng-template [ngIf]="node.leftChild !== undefined">
             <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: node.leftChild }"></ng-container>
           </ng-template>

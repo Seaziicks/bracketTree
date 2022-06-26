@@ -146,4 +146,44 @@ export class Bracket implements DoubleBinaryLeaf<Player> {
     }
   }
 
+  public createLoserLayer(depth: number, maxDepth: number) {
+    /*
+    this.maxDepth = maxDepth;
+    if (depth < maxDepth) {
+      if (this.rightChild === undefined || this.leftChild === undefined) {
+        this.leftChild = new Bracket(this.value1.clone(), Bracket.getFirstOpponent(this.value1, depth), this, this.maxDepth);
+        this.rightChild = new Bracket(this.value2.clone(), Bracket.getFirstOpponent(this.value2, depth), this, this.maxDepth);
+        this.value1.name = "";
+        this.value2.name = "";
+      }
+      this.rightChild.createNewLayers(depth + 1, maxDepth);
+      this.leftChild.createNewLayers(depth + 1, maxDepth);
+    }
+    */
+    this.maxDepth = maxDepth;
+    if (depth < maxDepth * 2) {
+      if (depth % 2 === 0) {
+        this.leftChild = new Bracket(this.value1.clone(), Bracket.getFirstOpponent(this.value1, depth), this, this.maxDepth);
+        this.leftChild.createLoserLayer(depth + 1, maxDepth);
+      } else {
+        this.leftChild = undefined;
+      }
+      this.rightChild = new Bracket(this.value2.clone(), Bracket.getFirstOpponent(this.value2, depth), this, this.maxDepth);
+      this.value1.name = "";
+      this.value2.name = "";
+      this.rightChild.createLoserLayer(depth + 1, maxDepth);
+    }
+  }
+
+  public maxBracketDepth(depth: number): number {
+    if (this.leftChild === undefined && this.rightChild === undefined) {
+      return depth;
+    } else {
+      return Math.max(
+        this.leftChild ? this.leftChild.maxBracketDepth(depth + 1) : depth,
+        this.rightChild ? this.rightChild.maxBracketDepth(depth + 1) : depth
+      );
+    }
+  }
+
 }

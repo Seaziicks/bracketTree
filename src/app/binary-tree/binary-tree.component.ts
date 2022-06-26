@@ -13,6 +13,7 @@ export class BinaryTreeComponent implements OnInit {
   depth: number = 0;
   rounds: number = 0;
   personalBracket: Bracket;
+  maxBracketDepth = 0;
 
   constructor() {
     this.personalBracket = new Bracket(new Player(1, "Player 1"), new Player(2, "Player 2"), null, 0);
@@ -21,13 +22,20 @@ export class BinaryTreeComponent implements OnInit {
   ngOnInit(): void {
     this.depth = Math.log2(this.nbNodes) / Math.log2(2);
     this.rounds = Math.log(this.nbNodes) / Math.log(2) - 1;
-
-    // On met ça ici car le @Input n'est pris que là, pas dans le constructeur.
     const layeredDepth = Math.floor(Math.log2(this.nbNodes) / Math.log2(2));
+
+/*
+    // On met ça ici car le @Input n'est pris que là, pas dans le constructeur.
+
     this.personalBracket.createNewLayers(1, layeredDepth);
     for (let i = 0; i < this.nbNodes - Math.pow(2, layeredDepth); i++) {
       this.personalBracket.addNextOpponentInterface();
     }
+    this.maxBracketDepth = this.personalBracket.maxBracketDepth(0);
+*/
+
+    const nbMatchWithLoserBracket = this.nbNodes * 2 - 2;
+    this.personalBracket.createLoserLayer(1, layeredDepth - 2);
   }
 
   setWinner(bracket: Bracket, player: Player) {
