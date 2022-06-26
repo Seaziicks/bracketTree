@@ -1,6 +1,6 @@
 export interface DoubleBinaryLeaf<T> {
-  value1: T | undefined;
-  value2: T | undefined;
+  player1: T | undefined;
+  player2: T | undefined;
   rightChild: DoubleBinaryLeaf<T> | undefined;
   leftChild: DoubleBinaryLeaf<T> | undefined;
 }
@@ -27,6 +27,15 @@ export class Player {
 
   public clone(): Player {
     return new Player(this.seed, "" + this.name);
+  }
+
+  isPlayerSet(): boolean {
+    return this.seed !== 0;
+  }
+
+  unsetPlayer(): void {
+    this.name = 'Player 0'
+    this.seed = 0;
   }
 
 }

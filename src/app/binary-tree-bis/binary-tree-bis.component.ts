@@ -1,13 +1,13 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Bracket} from "../interface/bracket";
-import {DoubleBinaryLeaf, Player} from "../interface/doubleLeaf";
+import {Player} from "../interface/doubleLeaf";
 
 @Component({
-  selector: 'app-binary-tree',
-  templateUrl: './binary-tree.component.html',
-  styleUrls: ['./binary-tree.component.css']
+  selector: 'app-binary-tree-bis',
+  templateUrl: './binary-tree-bis.component.html',
+  styleUrls: ['./binary-tree-bis.component.css']
 })
-export class BinaryTreeComponent implements OnInit {
+export class BinaryTreeBisComponent implements OnInit {
 
   @Input() nbNodes: number = 0;
   depth: number = 0;
@@ -23,7 +23,8 @@ export class BinaryTreeComponent implements OnInit {
     this.rounds = Math.log(this.nbNodes) / Math.log(2) - 1;
 
     // On met ça ici car le @Input n'est pris que là, pas dans le constructeur.
-    // this.createBracket();
+    this.createBracket();
+    console.log(this.personalBracket)
     // this.createLoserBracket();
 
   }

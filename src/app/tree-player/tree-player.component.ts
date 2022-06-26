@@ -10,6 +10,7 @@ export class TreePlayerComponent implements OnInit {
 
   @Input() player: Player | undefined;
   @Input() canWin: boolean = false;
+  @Input() isHighSeeded: boolean = false;
   @Output() playerWonEvent = new EventEmitter<Player>();
   score: number = 0;
 

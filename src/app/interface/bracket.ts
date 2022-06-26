@@ -5,16 +5,16 @@ export class Bracket implements DoubleBinaryLeaf<Player> {
   leftChild: Bracket | undefined;
   rightChild: Bracket | undefined;
   parent: Bracket | null;
-  value1: Player;
-  value2: Player;
+  player1: Player;
+  player2: Player;
 
   winner: Player | undefined;
 
   maxDepth: number;
 
   constructor(player1: Player, player2: Player, parent: Bracket | null, maxDepth: number) {
-    this.value1 = player1;
-    this.value2 = player2;
+    this.player1 = player1;
+    this.player2 = player2;
 
     this.parent = parent;
     this.leftChild = undefined;
@@ -27,10 +27,10 @@ export class Bracket implements DoubleBinaryLeaf<Player> {
     this.maxDepth = maxDepth;
     if (depth < maxDepth) {
       if (this.rightChild === undefined || this.leftChild === undefined) {
-        this.leftChild = new Bracket(this.value1.clone(), Bracket.getFirstOpponent(this.value1, depth), this, this.maxDepth);
-        this.rightChild = new Bracket(this.value2.clone(), Bracket.getFirstOpponent(this.value2, depth), this, this.maxDepth);
-        this.value1.name = "";
-        this.value2.name = "";
+        this.leftChild = new Bracket(this.player1.clone(), Bracket.getFirstOpponent(this.player1, depth), this, this.maxDepth);
+        this.rightChild = new Bracket(this.player2.clone(), Bracket.getFirstOpponent(this.player2, depth), this, this.maxDepth);
+        this.player1.unsetPlayer();
+        this.player2.unsetPlayer();
       }
       this.rightChild.createNewLayers(depth + 1, maxDepth);
       this.leftChild.createNewLayers(depth + 1, maxDepth);
@@ -40,11 +40,11 @@ export class Bracket implements DoubleBinaryLeaf<Player> {
   public addOneAsLeftMostLeaf(depth: number, added: boolean): boolean {
     if (depth < this.maxDepth && !added) {
       if (this.leftChild === undefined) {
-        this.leftChild = new Bracket(this.value1.clone(), Bracket.getFirstOpponent(this.value1.clone(), depth + 1), this, this.maxDepth);
+        this.leftChild = new Bracket(this.player1.clone(), Bracket.getFirstOpponent(this.player1.clone(), depth + 1), this, this.maxDepth);
         return true;
       }
       if (this.rightChild === undefined) {
-        this.rightChild = new Bracket(this.value2.clone(), Bracket.getFirstOpponent(this.value1.clone(), depth + 1), this, this.maxDepth);
+        this.rightChild = new Bracket(this.player2.clone(), Bracket.getFirstOpponent(this.player1.clone(), depth + 1), this, this.maxDepth);
         return true;
       }
       if (!added) {
@@ -85,26 +85,26 @@ export class Bracket implements DoubleBinaryLeaf<Player> {
 
   public addNextOpponnent(depth: number, added: boolean, nextOpponentSeed: number, bracketSeedOpponent: number): boolean {
     if (depth < this.maxDepth && !added) {
-      if (this.value1.seed === bracketSeedOpponent) {
+      if (this.player1.seed === bracketSeedOpponent) {
         if (this.leftChild === undefined) {
-          this.leftChild = new Bracket(this.value1.clone(), Bracket.getFirstOpponent(this.value1, depth + 1), this, this.maxDepth);
-          this.value1.name = "";
+          this.leftChild = new Bracket(this.player1.clone(), Bracket.getFirstOpponent(this.player1, depth + 1), this, this.maxDepth);
+          this.player1.unsetPlayer();
           return true;
         }
         if (this.rightChild === undefined) {
-          this.rightChild = new Bracket(this.value1.clone(), Bracket.getFirstOpponent(this.value1, depth + 1), this, this.maxDepth);
-          this.value1.name = "";
+          this.rightChild = new Bracket(this.player1.clone(), Bracket.getFirstOpponent(this.player1, depth + 1), this, this.maxDepth);
+          this.player1.unsetPlayer();
           return true;
         }
-      } else if (this.value2.seed === bracketSeedOpponent) {
+      } else if (this.player2.seed === bracketSeedOpponent) {
         if (this.leftChild === undefined) {
-          this.leftChild = new Bracket(this.value2.clone(), Bracket.getFirstOpponent(this.value2, depth + 1), this, this.maxDepth);
-          this.value2.name = "";
+          this.leftChild = new Bracket(this.player2.clone(), Bracket.getFirstOpponent(this.player2, depth + 1), this, this.maxDepth);
+          this.player2.unsetPlayer();
           return true;
         }
         if (this.rightChild === undefined) {
-          this.rightChild = new Bracket(this.value2.clone(), Bracket.getFirstOpponent(this.value2, depth + 1), this, this.maxDepth);
-          this.value2.name = "";
+          this.rightChild = new Bracket(this.player2.clone(), Bracket.getFirstOpponent(this.player2, depth + 1), this, this.maxDepth);
+          this.player2.unsetPlayer();
           return true;
         }
       }
@@ -128,21 +128,21 @@ export class Bracket implements DoubleBinaryLeaf<Player> {
 
   public getNextOpponentSeed(): number {
     if (this.leftChild !== undefined && this.rightChild !== undefined)
-      return Math.max(this.value1.seed, this.value2.seed, this.leftChild.getNextOpponentSeed(), this.rightChild.getNextOpponentSeed());
+      return Math.max(this.player1.seed, this.player2.seed, this.leftChild.getNextOpponentSeed(), this.rightChild.getNextOpponentSeed());
     else if (this.leftChild !== undefined)
-      return Math.max(this.value1.seed, this.value2.seed, this.leftChild.getNextOpponentSeed());
+      return Math.max(this.player1.seed, this.player2.seed, this.leftChild.getNextOpponentSeed());
     else if (this.rightChild !== undefined)
-      return Math.max(this.value1.seed, this.value2.seed,this.rightChild.getNextOpponentSeed());
+      return Math.max(this.player1.seed, this.player2.seed,this.rightChild.getNextOpponentSeed());
     else
       // On ne retourne plus 1 qu'ici parce que le plus grand est forcément dans une leaf, vu la construction de l'arbre
-      return Math.max(this.value1.seed, this.value2.seed) + 1;
+      return Math.max(this.player1.seed, this.player2.seed) + 1;
   }
 
   declareWinner(bracket: Bracket) {
     if (bracket === this.leftChild && bracket.winner) {
-      this.value1 = bracket.winner;
+      this.player1 = bracket.winner;
     } else if (bracket === this.rightChild && bracket.winner) {
-      this.value2 = bracket.winner;
+      this.player2 = bracket.winner;
     }
   }
 
@@ -151,10 +151,10 @@ export class Bracket implements DoubleBinaryLeaf<Player> {
     this.maxDepth = maxDepth;
     if (depth < maxDepth) {
       if (this.rightChild === undefined || this.leftChild === undefined) {
-        this.leftChild = new Bracket(this.value1.clone(), Bracket.getFirstOpponent(this.value1, depth), this, this.maxDepth);
-        this.rightChild = new Bracket(this.value2.clone(), Bracket.getFirstOpponent(this.value2, depth), this, this.maxDepth);
-        this.value1.name = "";
-        this.value2.name = "";
+        this.leftChild = new Bracket(this.player1.clone(), Bracket.getFirstOpponent(this.player1, depth), this, this.maxDepth);
+        this.rightChild = new Bracket(this.player2.clone(), Bracket.getFirstOpponent(this.player2, depth), this, this.maxDepth);
+        this.player1.unsetPlayer();
+        this.player2.unsetPlayer();
       }
       this.rightChild.createNewLayers(depth + 1, maxDepth);
       this.leftChild.createNewLayers(depth + 1, maxDepth);
@@ -163,14 +163,14 @@ export class Bracket implements DoubleBinaryLeaf<Player> {
     this.maxDepth = maxDepth;
     if (depth < maxDepth * 2) {
       if (depth % 2 === 0) {
-        this.leftChild = new Bracket(this.value1.clone(), Bracket.getFirstOpponent(this.value1, depth), this, this.maxDepth);
+        this.leftChild = new Bracket(this.player1.clone(), Bracket.getFirstOpponent(this.player1, depth), this, this.maxDepth);
         this.leftChild.createLoserLayer(depth + 1, maxDepth);
       } else {
         this.leftChild = undefined;
       }
-      this.rightChild = new Bracket(this.value2.clone(), Bracket.getFirstOpponent(this.value2, depth), this, this.maxDepth);
-      this.value1.name = "";
-      this.value2.name = "";
+      this.rightChild = new Bracket(this.player2.clone(), Bracket.getFirstOpponent(this.player2, depth), this, this.maxDepth);
+      this.player1.unsetPlayer();
+      this.player2.unsetPlayer();
       this.rightChild.createLoserLayer(depth + 1, maxDepth);
     }
   }

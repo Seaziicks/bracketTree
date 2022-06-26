@@ -14,13 +14,13 @@
       <li [class.isWinnerNode]="node.winner != undefined">
         <div class="node" [class.nodeDone]="node.winner !== undefined">
           <div class="playerWrapper">
-            <div class="player" [class.isWinner]="node.winner === node.player1" *ngIf="node.player1.name !== ''">
-              <app-tree-player [player]="node.player1" [canWin]="node.player1.name !== '' && node.player2.name !==''"
+            <div class="player player1" [class.isWinner]="node.winner === node.player1">
+              <app-tree-player [player]="node.player1" [canWin]="node.player1.isPlayerSet() && node.player2.isPlayerSet()" [isHighSeeded]="true"
                                (playerWonEvent)="this.setWinner(node, $event)"></app-tree-player>
             </div>
-            <span class="vertical-line" *ngIf="node.player1.name !== '' && node.player2.name !==''"></span>
-            <div class="player" [class.isWinner]="node.winner === node.player2" *ngIf="node.player2.name !== ''">
-              <app-tree-player [player]="node.player2" [canWin]="node.player1.name !== '' && node.player2.name !==''"
+            <span class="vertical-line"></span>
+            <div class="player player2" [class.isWinner]="node.winner === node.player2">
+              <app-tree-player [player]="node.player2" [canWin]="node.player1.isPlayerSet() && node.player2.isPlayerSet()" [isHighSeeded]="false"
                                (playerWonEvent)="this.setWinner(node, $event)"></app-tree-player>
             </div>
           </div>
