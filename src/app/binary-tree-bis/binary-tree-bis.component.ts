@@ -23,9 +23,9 @@ export class BinaryTreeBisComponent implements OnInit {
     this.rounds = Math.log(this.nbNodes) / Math.log(2) - 1;
 
     // On met ça ici car le @Input n'est pris que là, pas dans le constructeur.
-    this.createBracket();
+    // this.createBracket();
     console.log(this.personalBracket)
-    // this.createLoserBracket();
+    this.createLoserBracket();
 
   }
 
@@ -43,9 +43,20 @@ export class BinaryTreeBisComponent implements OnInit {
     if (this.personalBracket === undefined)
       this.personalBracket = new Bracket(new Player(1, "Player 1"), new Player(2, "Player 2"), null, 0);
 
-    const layeredDepth = Math.floor(Math.log2(this.nbNodes) / Math.log2(2));
+    // Ici on essaye de traficoter pour avoir le nombre qu'on veut.
+    const layeredDepth = Math.floor(Math.log2(this.nbNodes - 1) / Math.log2(2));
+    // console.log('layeredDepth :', layeredDepth);
     const nbMatchWithLoserBracket = this.nbNodes * 2 - 2;
-    this.personalBracket.createLoserLayer(1, layeredDepth - 2);
+    // this.personalBracket.createLoserLayer(1, layeredDepth - 1);
+    for (let i = 0; i < this.nbNodes - 3; i++) {
+      // console.log('=====================================')
+      // console.log('Ajout du numéro :', i + 3);
+      this.personalBracket.addNextLoserOpponentInterface(this.nbNodes);
+    }
+    // console.log('this.nbNodes - 3 :', this.nbNodes - 3)
+    // console.log('getNbLeaf :', this.personalBracket.getNbLeaf());
+    // console.log('maxDepthOfBracket :', this.personalBracket.maxDepthOfBracket())
+    // console.log('maxDepthWidth :', this.personalBracket.maxDepthWidth(0))
     this.maxBracketDepth = this.personalBracket.maxBracketDepth(0);
   }
 
@@ -63,8 +74,9 @@ export class BinaryTreeBisComponent implements OnInit {
   }
 
   changeNbNodes() {
-    console.log(this.nbNodes);
+    // console.log(this.nbNodes);
     this.personalBracket = new Bracket(new Player(1, "Player 1"), new Player(2, "Player 2"), null, 0);
-    this.createBracket();
+    // this.createBracket();
+    this.createLoserBracket();
   }
 }

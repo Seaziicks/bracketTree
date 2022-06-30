@@ -4,11 +4,19 @@
   padding: 0;
 }
 
+.treeWrapper {
+  display: flex;
+  background-color: #1976d2;
+  align-items: center;
+  justify-content: center;
+}
+
 .tree {
   overflow: auto;
   padding-bottom: 10px;
   min-height: 600px;
   background-color: #272A33;
+  width: max-content;
 }
 
 .tree {
@@ -56,6 +64,7 @@
   right: auto;
   left: 50%;
   border-left: 1px solid #ccc;
+  /*background-color: red;*/
 }
 
 .tree li:only-child::after, .tree li:only-child::before {

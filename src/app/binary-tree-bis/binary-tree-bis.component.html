@@ -6,38 +6,40 @@
 <input (change)="this.changeNbNodes()" [(ngModel)]="this.nbNodes"/>
 
 <!-- https://github.com/warisgeek/AngularBinaryTree -->
-<div class="tree">
-  <ul>
+<div class="treeWrapper">
+  <div class="tree">
+    <ul>
 
-    <ng-template #recursiveList let-node>
+      <ng-template #recursiveList let-node>
 
-      <li [class.isWinnerNode]="node.winner != undefined">
-        <div class="node" [class.nodeDone]="node.winner !== undefined">
-          <div class="playerWrapper">
-            <div class="player player1" [class.isWinner]="node.winner === node.player1">
-              <app-tree-player [player]="node.player1" [canWin]="node.player1.isPlayerSet() && node.player2.isPlayerSet()" [isHighSeeded]="true"
-                               (playerWonEvent)="this.setWinner(node, $event)"></app-tree-player>
-            </div>
-            <span class="vertical-line"></span>
-            <div class="player player2" [class.isWinner]="node.winner === node.player2">
-              <app-tree-player [player]="node.player2" [canWin]="node.player1.isPlayerSet() && node.player2.isPlayerSet()" [isHighSeeded]="false"
-                               (playerWonEvent)="this.setWinner(node, $event)"></app-tree-player>
+        <li [class.isWinnerNode]="node.winner != undefined">
+          <div class="node" [class.nodeDone]="node.winner !== undefined">
+            <div class="playerWrapper">
+              <div class="player player1" [class.isWinner]="node.winner === node.player1">
+                <app-tree-player [player]="node.player1" [canWin]="node.player1.isPlayerSet() && node.player2.isPlayerSet()" [isHighSeeded]="true"
+                                 (playerWonEvent)="this.setWinner(node, $event)"></app-tree-player>
+              </div>
+              <span class="vertical-line"></span>
+              <div class="player player2" [class.isWinner]="node.winner === node.player2">
+                <app-tree-player [player]="node.player2" [canWin]="node.player1.isPlayerSet() && node.player2.isPlayerSet()" [isHighSeeded]="false"
+                                 (playerWonEvent)="this.setWinner(node, $event)"></app-tree-player>
+              </div>
             </div>
           </div>
-        </div>
 
-        <ul *ngIf="node.rightChild !== undefined || node.leftChild !== undefined" [class.hasTwoWinnerNode]="node.leftChild && node.rightChild && node.leftChild.winner !== undefined && node.rightChild.winner !== undefined">
-          <ng-template [ngIf]="node.leftChild !== undefined">
-            <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: node.leftChild }"></ng-container>
-          </ng-template>
-          <ng-template [ngIf]="node.rightChild !== undefined">
-            <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: node.rightChild }"></ng-container>
-          </ng-template>
-        </ul>
-      </li>
-    </ng-template>
+          <ul *ngIf="node.rightChild !== undefined || node.leftChild !== undefined" [class.hasTwoWinnerNode]="node.leftChild && node.rightChild && node.leftChild.winner !== undefined && node.rightChild.winner !== undefined">
+            <ng-template [ngIf]="node.leftChild !== undefined">
+              <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: node.leftChild }"></ng-container>
+            </ng-template>
+            <ng-template [ngIf]="node.rightChild !== undefined">
+              <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: node.rightChild }"></ng-container>
+            </ng-template>
+          </ul>
+        </li>
+      </ng-template>
 
-    <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: this.personalBracket }"></ng-container>
+      <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: this.personalBracket }"></ng-container>
 
-  </ul>
+    </ul>
+  </div>
 </div>

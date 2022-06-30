@@ -26,7 +26,7 @@ export class Player {
   }
 
   public clone(): Player {
-    return new Player(this.seed, "" + this.name);
+    return new Player(this.seed, "Player " + this.seed);
   }
 
   isPlayerSet(): boolean {
