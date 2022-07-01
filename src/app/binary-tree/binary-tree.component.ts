@@ -51,7 +51,7 @@ export class BinaryTreeComponent implements OnInit {
 
 
   setWinner(bracket: Bracket, player: Player) {
-    if (bracket.player1.name !== "" && bracket.player2.name !== "") {
+    if (bracket.player1.getName() !== "" && bracket.player2.getName() !== "") {
       bracket.winner = player;
       if (bracket.parent !== null) {
         bracket.parent.declareWinner(bracket);

@@ -1,6 +1,6 @@
 <div class="playerPart" [class.invisblePlayer]="!player.isPlayerSet()" *ngIf="player" [ngClass]="this.isHighSeeded ? 'topPlayer' : 'bottomPlayer' ">
-  <div class="playerSeed"> {{ player.seed }} </div>
-  <div class="playerName"> {{ player.name }} </div>
+  <div class="playerSeed"> {{ player.getSeed() }} </div>
+  <div class="playerName"> {{ player.getName() }} </div>
   <!--div> {{ this.score }} </div>
   <button *ngIf="this.canWin" (click)="this.playerWon()">WIN</button-->
 </div>

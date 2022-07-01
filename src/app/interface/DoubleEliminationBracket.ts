@@ -45,14 +45,9 @@ export class DoubleEliminationBracket {
     let nbWinnerPlace = 0;
     let nbLoserPlace = 0;
 
-    const maxDepth: number = this.winnerBracket.maxDepthOfBracket();
     let matchNumber = 1;
     let loserPlacement = this.loserBracket.maxDepthOfBracket();
     let winnerPlacement = this.winnerBracket.maxDepthOfBracket();
-    // if (Math.log2(this.nbPlayer) % 1 != 0) { }
-    // for (let i = maxDepth; i > 0; i--) {
-    //
-    // }
 
     while (nbWinnerPlace + nbLoserPlace < (this.nbPlayer * 2) - 2 && winnerPlacement >= 0 && loserPlacement >= 0) {
       // console.log('========================================')

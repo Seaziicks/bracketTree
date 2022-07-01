@@ -121,7 +121,7 @@ export class Bracket implements DoubleBinaryLeaf<Player> {
   }
 
   private static getFirstOpponent(player: Player, depth: number): Player {
-    const placement = this.getFirstOpponentSeed(player.seed, depth);
+    const placement = this.getFirstOpponentSeed(player.getSeed(), depth);
     return new Player(placement,"Player " + placement);
   }
 
@@ -131,13 +131,13 @@ export class Bracket implements DoubleBinaryLeaf<Player> {
 
   public addNextOpponnent(depth: number, added: boolean, nextOpponentSeed: number, bracketSeedOpponent: number): boolean {
     if (depth < this.maxDepth && !added) {
-      if (this.player1.seed === bracketSeedOpponent) {
+      if (this.player1.getSeed() === bracketSeedOpponent) {
         if (this.leftChild === undefined) {
           this.leftChild = new Bracket(this.player1.clone(), Bracket.getFirstOpponent(this.player1, depth + 1), this, this.maxDepth);
           this.player1.unsetPlayer();
           return true;
         }
-      } else if (this.player2.seed === bracketSeedOpponent) {
+      } else if (this.player2.getSeed() === bracketSeedOpponent) {
         if (this.rightChild === undefined) {
           this.rightChild = new Bracket(this.player2.clone(), Bracket.getFirstOpponent(this.player2, depth + 1), this, this.maxDepth);
           this.player2.unsetPlayer();
@@ -164,14 +164,14 @@ export class Bracket implements DoubleBinaryLeaf<Player> {
 
   public getNextOpponentSeed(): number {
     if (this.leftChild !== undefined && this.rightChild !== undefined)
-      return Math.max(this.player1.seed, this.player2.seed, this.leftChild.getNextOpponentSeed(), this.rightChild.getNextOpponentSeed());
+      return Math.max(this.player1.getSeed(), this.player2.getSeed(), this.leftChild.getNextOpponentSeed(), this.rightChild.getNextOpponentSeed());
     else if (this.leftChild !== undefined)
-      return Math.max(this.player1.seed, this.player2.seed, this.leftChild.getNextOpponentSeed());
+      return Math.max(this.player1.getSeed(), this.player2.getSeed(), this.leftChild.getNextOpponentSeed());
     else if (this.rightChild !== undefined)
-      return Math.max(this.player1.seed, this.player2.seed,this.rightChild.getNextOpponentSeed());
+      return Math.max(this.player1.getSeed(), this.player2.getSeed(),this.rightChild.getNextOpponentSeed());
     else
       // On ne retourne plus 1 qu'ici parce que le plus grand est forcément dans une leaf, vu la construction de l'arbre
-      return Math.max(this.player1.seed, this.player2.seed) + 1;
+      return Math.max(this.player1.getSeed(), this.player2.getSeed()) + 1;
   }
 
   declareWinner(bracket: Bracket) {
@@ -232,7 +232,7 @@ export class Bracket implements DoubleBinaryLeaf<Player> {
           // console.log(" - left maxDepthWidth : " + this.leftChild.maxDepthWidth(depth))
           // console.log(" - right maxDepthWidth : " + this.rightChild.maxDepthWidth(depth))
           // console.log(this.getSubNodesAtSpecificDepth(depth, this.maxDepthOfBracket() + 2))
-          if (this.leftChild.maxDepthOfBracket() > this.rightChild.maxDepthOfBracket() || this.leftChild.maxDepthWidth(depth) > this.rightChild.maxDepthWidth(depth)) {
+          if (this.leftChild.maxDepthOfBracket() > this.rightChild.maxDepthOfBracket() || this.leftChild.maxDepthWidth() > this.rightChild.maxDepthWidth()) {
             added = this.rightChild.addNextLoserOpponnent(depth + 1, added, nextOpponentSeed, bracketSeedOpponent, maxDepth)
             // console.log('Choix à droite !')
           }
@@ -247,12 +247,11 @@ export class Bracket implements DoubleBinaryLeaf<Player> {
     return false;
   }
 
-  public maxDepthWidth(depth: number): number {
+  public maxDepthWidth(): number {
     return this.getSubNodesAtSpecificDepth(1, this.maxDepthOfBracket()).length
   }
 
   public addNextLoserOpponentInterface(nbPlayer: number) {
-    const nbLooser = nbPlayer - 1;
     const x = Math.floor(Math.log2(nbPlayer - 1) / Math.log2(2));
     // console.log('x :', x);
     let nbOfLeftAlone = 0;
@@ -261,7 +260,7 @@ export class Bracket implements DoubleBinaryLeaf<Player> {
     }
     nbOfLeftAlone++;
     // console.log('nbOfLeftAlone :', nbOfLeftAlone);
-    const test = nbOfLeftAlone + Math.pow(2, x - 1) * 2;
+    // const test = nbOfLeftAlone + Math.pow(2, x - 1) * 2;
     // console.log('test :', test);
     // console.log('Math.pow(2, x - 1) :', Math.pow(2, x - 1));
     this.maxDepth = x;

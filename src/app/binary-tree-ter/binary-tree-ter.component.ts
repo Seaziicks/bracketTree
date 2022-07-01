@@ -2,7 +2,6 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Bracket} from "../interface/bracket";
 import {Player} from "../interface/doubleLeaf";
 import {DoubleEliminationBracket} from "../interface/DoubleEliminationBracket";
-import {players} from "../interface/PlayerList";
 
 @Component({
   selector: 'app-binary-tree-ter',
@@ -49,7 +48,7 @@ export class BinaryTreeTerComponent implements OnInit {
 
 
   setWinner(bracket: Bracket, player: Player) {
-    if (bracket.player1.name !== "" && bracket.player2.name !== "") {
+    if (bracket.player1.getName() !== "" && bracket.player2.getName() !== "") {
       bracket.winner = player;
       if (bracket.parent !== null) {
         bracket.parent.declareWinner(bracket);
