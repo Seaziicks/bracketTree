@@ -34,7 +34,7 @@ export class Player {
   }
 
   unsetPlayer(): void {
-    this.name = 'Player 0'
+    this.name = ''
     this.seed = 0;
   }
 

@@ -25,7 +25,7 @@ export class BinaryTreeTerComponent implements OnInit {
     this.setBrackets();
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.depth = Math.log2(this.nbNodes) / Math.log2(2);
     this.rounds = Math.log(this.nbNodes) / Math.log(2) - 1;
 
@@ -34,13 +34,13 @@ export class BinaryTreeTerComponent implements OnInit {
     // console.log(this.loserBracket)
 
 
-    this.setBrackets();
+    await this.setBrackets();
     console.log(this.winnerBracket);
   }
 
-  setBrackets() {
+  async setBrackets() {
     this.doubleEliminationBracket = new DoubleEliminationBracket(this.getBasicPlayerArray(this.nbNodes));
-    this.doubleEliminationBracket.defineOrder();
+    await this.doubleEliminationBracket.createBrackets();
     this.winnerBracket = this.doubleEliminationBracket.winnerBracket;
     this.loserBracket = this.doubleEliminationBracket.loserBracket;
   }
@@ -63,6 +63,30 @@ export class BinaryTreeTerComponent implements OnInit {
     this.setBrackets();
     this.depth = Math.log2(this.nbNodes);
     this.rounds = Math.log(this.nbNodes) / Math.log(2) - 1;
+  }
+
+  addOneNode() {
+    this.nbNodes++;
+    this.changeNbNodes();
+  }
+
+  substractOneNode() {
+    this.nbNodes--;
+    this.changeNbNodes();
+  }
+
+  keyDownNbNodes(event: any) {
+    if (event.key === '+') {
+      event.preventDefault();
+      this.addOneNode();
+    } else if (event.key === '-') {
+      event.preventDefault();
+      this.substractOneNode();
+    } else if (event.key === 'ArrowLeft') {
+      this.substractOneNode();
+    } else if (event.key === 'ArrowRight') {
+      this.addOneNode();
+    }
   }
 
   getBasicPlayerArray(nbPlayer: number) {

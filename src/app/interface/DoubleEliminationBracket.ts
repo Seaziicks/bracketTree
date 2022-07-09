@@ -1,5 +1,6 @@
 import {Bracket} from "./bracket";
 import {Player} from "./doubleLeaf";
+import {delay} from "rxjs/operators";
 // https://challonge.com/fr/otournament5
 export class DoubleEliminationBracket {
   winnerBracket: Bracket;
@@ -10,12 +11,18 @@ export class DoubleEliminationBracket {
 
   constructor(playerList: Player[]) {
     this.nbPlayer = playerList.length;
-    if (this.nbPlayer < 3 ) {
+    if (this.nbPlayer < 3) {
       throw new Error("Le nombre de joueur doit être supérieur ou égale à 3.")
     }
     this.playerList = playerList;
+    this.winnerBracket = new Bracket(new Player(1, "Player 1"), new Player(2, "Player 2"), null, 0);
+    this.loserBracket = new Bracket(new Player(1, "Player 1"), new Player(2, "Player 2"), null, 0);
+  }
+
+  async createBrackets() {
     this.winnerBracket = this.createWinnerBracket();
-    this.loserBracket =  this.createLoserBracket();
+    this.loserBracket = await this.createLoserBracket();
+    this.defineOrder();
   }
 
   createWinnerBracket() {
@@ -28,14 +35,20 @@ export class DoubleEliminationBracket {
     return winnerBracket
   }
 
-  createLoserBracket() {
+  async createLoserBracket() {
+    console.log('=======================================')
     let loserBracket = new Bracket(new Player(1, "Player 1"), new Player(2, "Player 2"), null, 0);
 
     // Ici on essaye de traficoter pour avoir le nombre qu'on veut.
     // const layeredDepth = Math.floor(Math.log2(this.nbPlayer - 1) / Math.log2(2));
     // const nbMatchWithLoserBracket = this.nbPlayer * 2 - 2;
-    for (let i = 0; i < this.nbPlayer - 3; i++) {
-      loserBracket.addNextLoserOpponentInterface(this.nbPlayer);
+    for (let i = 2; i < this.nbPlayer - 1; i++) {
+      console.log('-----------------------------');
+      console.log('i :', i + 1);
+      // await new Promise(f => setTimeout(f, 10));
+      // console.log(loserBracket.print());
+      // console.log(loserBracket);
+      loserBracket.addNextLoserOpponentInterface(this.nbPlayer, i + 2);
     }
     return loserBracket;
   }
@@ -60,9 +73,18 @@ export class DoubleEliminationBracket {
       // console.log('2 * (winnerPlacement - 1):', 2 * (winnerPlacement - 1));
       // console.log('winnerPlacement :', winnerPlacement);
       winnerMatchs.forEach( (match) => {
-        match.matchNumber = matchNumber;
-        matchNumber++;
-        nbWinnerPlace++;
+        if (match.rightChild === undefined && match.leftChild === undefined) {
+          match.matchNumber = matchNumber;
+          matchNumber++;
+          nbWinnerPlace++;
+        }
+      });
+      winnerMatchs.forEach( (match) => {
+        if (match.matchNumber === 999) {
+          match.matchNumber = matchNumber;
+          matchNumber++;
+          nbWinnerPlace++;
+        }
       });
       winnerPlacement--;
       // console.log('nbWinnerPlace :', nbWinnerPlace);
@@ -76,9 +98,18 @@ export class DoubleEliminationBracket {
 
       while (nbWinnerPlace - nbLoserPlace > loserMatchs.length && loserPlacement > 0) {
         loserMatchs.forEach( (match) => {
-          match.matchNumber = matchNumber
-          matchNumber++;
-          nbLoserPlace++;
+          if (match.rightChild === undefined && match.leftChild === undefined) {
+            match.matchNumber = matchNumber
+            matchNumber++;
+            nbLoserPlace++;
+          }
+        });
+        loserMatchs.forEach( (match) => {
+          if (match.matchNumber === 999) {
+            match.matchNumber = matchNumber;
+            matchNumber++;
+            nbWinnerPlace++;
+          }
         });
         loserPlacement--;
         loserMatchs = this.loserBracket.getSubNodesAtSpecificDepth(1, loserPlacement);
@@ -87,7 +118,26 @@ export class DoubleEliminationBracket {
       // console.log('Classé winner :', winnerMatchs);
       // console.log('Classé looser :', loserMatchs);
     }
+  }
 
+  public defineLoserPlacement() {
+    let nbWinnerPlace = 0;
+    let nbLoserPlace = 0;
+
+    let matchNumber = 1;
+    let loserPlacement = this.loserBracket.maxDepthOfBracket();
+    let winnerPlacement = this.winnerBracket.maxDepthOfBracket();
+
+    while(this.hasEmptyLeaf(this.loserBracket)) {
+
+      let winnerMatchs = this.winnerBracket.getSubNodesAtSpecificDepth(1, winnerPlacement);
+
+
+    }
+  }
+
+  hasEmptyLeaf(bracket: Bracket) {
+    return true;
   }
 
 }

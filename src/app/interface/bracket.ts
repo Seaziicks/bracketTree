@@ -91,6 +91,20 @@ export class Bracket implements DoubleBinaryLeaf<Player> {
     return root.getNbLeaf();
   }
 
+  public getMaxDepthFromRoot(): number {
+    let root;
+    if (this.parent !== null) {
+      let parent = this.parent
+      while (parent.parent !== null) {
+        parent = parent.parent;
+      }
+      root = parent;
+    } else {
+      root = this
+    }
+    return root.maxDepthOfBracket();
+  }
+
   /*
   // @ts-ignore
   public getNbLeaf(): number {
@@ -109,14 +123,38 @@ export class Bracket implements DoubleBinaryLeaf<Player> {
     if (depth === desiredDepth) {
       return [this];
     } else {
-      if (this.leftChild !== undefined && this.rightChild !== undefined)
+      if (this.leftChild !== undefined && this.rightChild !== undefined) {
         return [...this.leftChild.getSubNodesAtSpecificDepth(depth + 1, desiredDepth), ...this.rightChild.getSubNodesAtSpecificDepth(depth + 1, desiredDepth)];
-      else if (this.leftChild !== undefined && this.rightChild === undefined)
+      } else if (this.leftChild !== undefined && this.rightChild === undefined) {
         return [...this.leftChild.getSubNodesAtSpecificDepth(depth + 1, desiredDepth)]
-      else if (this.leftChild === undefined && this.rightChild !== undefined)
+      } else if (this.leftChild === undefined && this.rightChild !== undefined) {
         return [...this.rightChild.getSubNodesAtSpecificDepth(depth + 1, desiredDepth)]
-      else
+      } else
         return []
+    }
+  }
+
+  public getSubNodesAtSpecificDepthWithLogs(depth: number, desiredDepth: number): Bracket[] {
+    console.log('Je suis :', this)
+    // console.log('Je suis :', this.matchNumber);
+    if (depth === desiredDepth) {
+      console.log('Je me suis retourné');
+      console.log(this.rightChild);
+      console.log(this.leftChild);
+      return [this];
+    } else {
+      if (this.leftChild !== undefined && this.rightChild !== undefined) {
+        console.log("J'ai retourné les deux");
+        return [...this.leftChild.getSubNodesAtSpecificDepthWithLogs(depth + 1, desiredDepth), ...this.rightChild.getSubNodesAtSpecificDepthWithLogs(depth + 1, desiredDepth)];
+      } else if (this.leftChild !== undefined && this.rightChild === undefined) {
+        console.log("J'ai retourné leftChild");
+        return [...this.leftChild.getSubNodesAtSpecificDepthWithLogs(depth + 1, desiredDepth)]
+      } else if (this.leftChild === undefined && this.rightChild !== undefined) {
+        console.log("J'ai retourné rightChild");
+        return [...this.rightChild.getSubNodesAtSpecificDepthWithLogs(depth + 1, desiredDepth)]
+      } else
+        console.log("Je n'ai rien retourné");
+      return []
     }
   }
 
@@ -198,31 +236,40 @@ export class Bracket implements DoubleBinaryLeaf<Player> {
     }
   }
 
-  public addNextLoserOpponnent(depth: number, added: boolean, nextOpponentSeed: number, bracketSeedOpponent: number, maxDepth: number): boolean {
+  public addNextLoserOpponnent(depth: number, added: boolean, nextOpponentSeed: number, bracketSeedOpponent: number, maxDepth: number, i: number): boolean {
     this.maxDepth = maxDepth;
     // console.log(maxDepth);
     if (!added && depth < this.maxDepth * 2) {
       if (depth % 2 !== 0) {
-        if (this.rightChild !== undefined)
-          added = this.rightChild.addNextLoserOpponnent(depth + 1, added, nextOpponentSeed, bracketSeedOpponent, maxDepth)
-        else {
+        console.log('Je suis sens unique.');
+        if (this.rightChild !== undefined) {
+          console.log("Et j'envoie sur ma droite, car déjà définie.")
+          added = this.rightChild.addNextLoserOpponnent(depth + 1, added, nextOpponentSeed, bracketSeedOpponent, maxDepth, i)
+        } else {
           this.rightChild = new Bracket(this.player2.clone(), new Player(this.getNbLeafFromRoot() + 1 , 'Player ' + (this.getNbLeafFromRoot() + 1)), this, this.maxDepth);
-          // this.player2.unsetPlayer();
-          this.player2.name = 'rightChild dad';
+          this.player2.unsetPlayer();
+          this.player1 = new Player(0, 'Perdant de x');
+          console.log(this.rightChild);
+          // this.player2.name = 'rightChild dad';
+          console.log(this)
           return true;
         }
       } else {
-        if (this.leftChild === undefined) {
-          this.leftChild = new Bracket(this.player1.clone(), new Player(this.getNbLeaf() + 1 , 'Player ' + (this.getNbLeaf() + 1)), this, this.maxDepth);
-          // this.player1.unsetPlayer();
-          this.player1.name = 'leftChild dad';
-          return true;
-        } else if (this.rightChild === undefined) {
+        if (this.rightChild === undefined) {
           this.rightChild = new Bracket(this.player2.clone(), new Player(this.getNbLeaf() + 1 , 'Player ' + (this.getNbLeaf() + 1)), this, this.maxDepth);
-          // this.player2.unsetPlayer();
-          this.player2.name = 'rightChild dad';
+          this.player2.unsetPlayer();
+          // console.log(this.rightChild);
+          // this.player2.name = 'rightChild dad';
+          console.log(this)
           return true;
-        } else {
+        } else if (this.leftChild === undefined) {
+          this.leftChild = new Bracket(this.player1.clone(), new Player(this.getNbLeaf() + 1 , 'Player ' + (this.getNbLeaf() + 1)), this, this.maxDepth);
+          this.player1.unsetPlayer();
+          // console.log(this.leftChild);
+          // this.player1.name = 'leftChild dad';
+          console.log(this)
+          return true;
+        } else  {
           // console.log('------')
           // console.log(depth + " | " + this.player1.seed + " & " + this.player2.seed)
           // console.log(" - self maxDepthOfBracket : " + this.maxDepthOfBracket())
@@ -232,12 +279,89 @@ export class Bracket implements DoubleBinaryLeaf<Player> {
           // console.log(" - left maxDepthWidth : " + this.leftChild.maxDepthWidth(depth))
           // console.log(" - right maxDepthWidth : " + this.rightChild.maxDepthWidth(depth))
           // console.log(this.getSubNodesAtSpecificDepth(depth, this.maxDepthOfBracket() + 2))
-          if (this.leftChild.maxDepthOfBracket() > this.rightChild.maxDepthOfBracket() || this.leftChild.maxDepthWidth() > this.rightChild.maxDepthWidth()) {
-            added = this.rightChild.addNextLoserOpponnent(depth + 1, added, nextOpponentSeed, bracketSeedOpponent, maxDepth)
-            // console.log('Choix à droite !')
+          // if (this.leftChild.maxBracketDepth(1) > this.rightChild.maxBracketDepth(1)
+          //   || (this.leftChild.maxDepthWidth() > this.rightChild.maxDepthWidth() || (
+          //      i % 4 > 1 && this.parent &&  this.parent.isRoot()) )) {
+          //   console.log('--!!!!!!!!!!!!!!--!!!!!!!!!!!!!!--');
+          //   console.log(i%4)
+          //   console.log(this);
+          //   console.log(this.leftChild.getSubNodesAtSpecificDepthWithLogs(1, this.leftChild.maxBracketDepth(1)));
+          //   console.log(this.rightChild.getSubNodesAtSpecificDepthWithLogs(1, this.rightChild.maxBracketDepth(1)));
+          //   console.log(this.leftChild.maxDepthOfBracket() > this.rightChild.maxDepthOfBracket());
+          //   console.log(this.leftChild.maxBracketDepth(1) + '>' + this.rightChild.maxBracketDepth(1));
+          //   console.log(this.leftChild.maxDepthWidth() > this.rightChild.maxDepthWidth());
+          //   console.log(this.maxDepthOfBracket());
+          //   added = this.rightChild.addNextLoserOpponnent(depth + 1, added, nextOpponentSeed, bracketSeedOpponent, maxDepth, i)
+          //   console.log('Choix à droite !')
+          // }
+          // if (this.maxBracketDepth(1) === 2 && (i%x)%y === 0)
+          /*
+          * L'idée est de voir si il y a un motif qui se dégage de la pette échelle, un motif de l'échelle plus gande, et un motif de l'encore plus grande.
+          * Et voir comment on peut les appliquer, comment on les détecte.
+          * Mais il me semble que l'histoire du motif est une bonne piste.
+          * Meilleure que les autres, en tout cas !
+          */
+          console.log('-------------')
+          console.log(this)
+          console.log('i :', i)
+          // console.log('this.getDepth(1) :', this.getDepth(1))
+          // console.log('this.getDepth(1) * 2 :', this.getDepth(1) * 2)
+          // console.log('i % this.getDepth(1) * 2 :', i % (this.getDepth(1) * 2))
+          // console.log('this.getDepth(1) - 1 :', this.getDepth(1) - 1)
+          // console.log((i % (this.getDepth(1) * 2))  + '>' + (this.getDepth(1) - 1))
+          // console.log((i % (this.getDepth(1) * 2)) > (this.getDepth(1) - 1))
+
+          // console.log('___')
+          // console.log('this.getDepth(1) :', this.getDepth(1))
+          // console.log('this.getDepth(1) / 2 :', this.getDepth(1) / 2)
+          // console.log('this.getDepth(0) :', this.getDepth(0))
+          // console.log('this.getDepth(0) - 1 :', this.getDepth(0) - 1)
+          // console.log('this.getDepth(0) / 2 :', this.getDepth(0) / 2)
+          // console.log('2 * (this.getDepth(0) - 1) :',  2 * (this.getDepth(0) - 1))
+          // console.log('((this.getDepth(1) * 2) / (2 * (this.getDepth(0) - 1))) :', ((this.getDepth(1) * 2) / (2 * (this.getDepth(0) - 1))))
+          // console.log('((this.getDepth(1) * 2) / Math.pow(2, this.getDepth(0) - 1)) :', ((this.getDepth(1) * 2) / (2 * (this.getDepth(0) - 1))))
+          // console.log()
+          // console.log()
+          console.log('this.getDepth(1) :', this.getDepth(1))
+          console.log('this.getDepth(1) / 2 :', this.getDepth(1) / 2)
+          console.log('(this.getDepth(1) / 2) + 1 :', (this.getDepth(1) / 2) + 1)
+          console.log('Math.pow(2, (this.getDepth(1) / 2) + 1) :',  Math.pow(2, (this.getDepth(1) / 2) + 1))
+          console.log('i % Math.pow(2, (this.getDepth(1) / 2) + 1) :',  i % Math.pow(2, (this.getDepth(1) / 2) + 1))
+          console.log('(Math.pow(2, (this.getDepth(1) / 2) + 1) / 2) - 1 :',  (Math.pow(2, (this.getDepth(1) / 2) + 1) / 2) - 1)
+          console.log((i % Math.pow(2, (this.getDepth(1) / 2) + 1)) + '>' + ((Math.pow(2, (this.getDepth(1) / 2) + 1) / 2) - 1))
+          console.log(i % Math.pow(2, (this.getDepth(1) / 2) + 1) > (Math.pow(2, (this.getDepth(1) / 2) + 1) / 2) - 1)
+          console.log(added)
+          // console.log(this.maxBracketDepth(0))
+          // console.log(i % 4 > 1 && this.parent && this.parent.isRoot())
+          // console.log(this.leftChild === undefined && this.rightChild === undefined)
+          // console.log(this.maxBracketDepth(0) === 1)
+          // console.log(this.maxBracketDepth(0) === 3 && this.leftChild.maxBracketDepth(1) > this.rightChild.maxBracketDepth(1))
+          // console.log(this.maxBracketDepth(0) === 3 && this.leftChild.maxBracketDepth(1) === 3 && this.rightChild.maxDepthWidth() === 2)
+          // console.log()
+          if (
+            i % Math.pow(2, (this.getDepth(1) / 2) + 1) > (Math.pow(2, (this.getDepth(1) / 2) + 1) / 2) - 1
+            || this.leftChild.maxBracketDepth(0) > this.rightChild.maxBracketDepth(0)
+            // ||
+            // !(this.parent &&  this.parent.isRoot()) &&
+            // (
+            //   this.leftChild === undefined && this.rightChild === undefined ||
+            //   this.maxBracketDepth(0) === 1 ||
+            //   (this.maxBracketDepth(0) === 3 &&
+            //   (
+            //     this.leftChild.maxBracketDepth(0) > this.rightChild.maxBracketDepth(0) ||
+            //     this.leftChild.maxBracketDepth(0) === 2 && this.maxDepthWidth() === 2
+            //   ))
+            // )
+          ) {
+            console.log("J'envoie à droite !")
+            added = this.rightChild.addNextLoserOpponnent(depth + 1, added, nextOpponentSeed, bracketSeedOpponent, maxDepth, i)
           }
+        if ((i % Math.pow(2, (this.getDepth(1) / 2) + 1) > (Math.pow(2, (this.getDepth(1) / 2) + 1) / 2) - 1) && !added){
+          console.error("En fait non !")
+        }
           if (!added) {
-            added = this.leftChild.addNextLoserOpponnent(depth + 1, added, nextOpponentSeed, bracketSeedOpponent, maxDepth)
+            console.log("J'envoie à gauche, sur :", this.leftChild);
+            added = this.leftChild.addNextLoserOpponnent(depth + 1, added, nextOpponentSeed, bracketSeedOpponent, maxDepth, i)
           }
         }
       }
@@ -248,11 +372,11 @@ export class Bracket implements DoubleBinaryLeaf<Player> {
   }
 
   public maxDepthWidth(): number {
-    return this.getSubNodesAtSpecificDepth(1, this.maxDepthOfBracket()).length
+    return this.getSubNodesAtSpecificDepth(1, this.maxBracketDepth(1)).length
   }
 
-  public addNextLoserOpponentInterface(nbPlayer: number) {
-    const x = Math.floor(Math.log2(nbPlayer - 1) / Math.log2(2));
+  public addNextLoserOpponentInterface(nbPlayer: number, i: number) {
+    const x = Math.floor(Math.log2(i - 1 ) / Math.log2(2));
     // console.log('x :', x);
     let nbOfLeftAlone = 0;
     for (let i = 1; i < x; i++) {
@@ -268,16 +392,17 @@ export class Bracket implements DoubleBinaryLeaf<Player> {
     const nextOpponentSeed = this.getNextOpponentSeed()
     // console.log(Bracket.getFirstOpponentSeed(nextOpponentSeed, this.maxDepth));
     // console.log(nextOpponentSeed);
-    this.addNextLoserOpponnent(1, false, nextOpponentSeed, Bracket.getFirstOpponentSeed(nextOpponentSeed, this.maxDepth), this.maxDepth);
+    this.addNextLoserOpponnent(1, false, nextOpponentSeed, Bracket.getFirstOpponentSeed(nextOpponentSeed, this.maxDepth), this.maxDepth, i);
   }
 
   public maxBracketDepth(depth: number): number {
+    // console.log('maxBracketDepth', this);
     if (this.leftChild === undefined && this.rightChild === undefined) {
       return depth;
     } else {
       return Math.max(
-        this.leftChild ? this.leftChild.maxBracketDepth(depth + 1) : depth,
-        this.rightChild ? this.rightChild.maxBracketDepth(depth + 1) : depth
+        this.leftChild !== undefined ? this.leftChild.maxBracketDepth(depth + 1) : depth,
+        this.rightChild !== undefined ? this.rightChild.maxBracketDepth(depth + 1) : depth
       );
     }
   }
@@ -291,6 +416,31 @@ export class Bracket implements DoubleBinaryLeaf<Player> {
       return 1 + this.rightChild.maxDepthOfBracket()
     else
       return 1;
+  }
+
+  print(): any {
+    if (this.leftChild === undefined && this.rightChild === undefined) {
+      return {'amatchNumber' : this.matchNumber};
+    } else if (this.leftChild !== undefined && this.rightChild === undefined) {
+      return {'amatchNumber' : this.matchNumber, 'l' : this.leftChild.print()}
+    } else if (this.leftChild === undefined && this.rightChild !== undefined) {
+      return {'amatchNumber' : this.matchNumber, 'r' : this.rightChild.print()}
+    } else if (this.leftChild !== undefined && this.rightChild !== undefined) {
+      return {'amatchNumber' : this.matchNumber, 'r' : this.rightChild.print(), 'l' : this.leftChild.print()}
+    } else
+      throw new Error('print failed');
+
+  }
+
+  isRoot() {
+    return this.parent === null;
+  }
+
+  getDepth(depth: number): number {
+    if(this.parent)
+      return this.parent.getDepth(depth + 1);
+    else
+      return depth;
   }
 
 }

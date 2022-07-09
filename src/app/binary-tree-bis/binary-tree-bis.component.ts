@@ -51,7 +51,7 @@ export class BinaryTreeBisComponent implements OnInit {
     for (let i = 0; i < this.nbNodes - 3; i++) {
       // console.log('=====================================')
       // console.log('Ajout du numéro :', i + 3);
-      this.personalBracket.addNextLoserOpponentInterface(this.nbNodes);
+      this.personalBracket.addNextLoserOpponentInterface(this.nbNodes, i);
     }
     // console.log('this.nbNodes - 3 :', this.nbNodes - 3)
     // console.log('getNbLeaf :', this.personalBracket.getNbLeaf());

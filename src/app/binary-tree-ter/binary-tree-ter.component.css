@@ -78,6 +78,7 @@
 
 .tree li:first-child::before, .tree li:last-child::after, .tree li.emptyLiChild::after, .tree li.emptyLiChild::before {
   border: 0 none;
+  display: none;
 }
 
 .emptyLiChild {
@@ -227,4 +228,20 @@ div.tree .player {
   align-self: center;
   color: wheat;
   margin-right: 3px;
+}
+
+.buttonsWrapper {
+  display: inline-block;
+  flex-flow: column;
+  top: -50%;
+}
+
+.buttons {
+  display: flex;
+  flex-flow: column;
+
+}
+
+.buttons button {
+
 }

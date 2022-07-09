@@ -3,7 +3,13 @@
 <p> depth : {{ this.depth }} </p>
 <p> rounds : {{ this.rounds }} </p>
 <p> maxBracketDepth : {{ this.maxBracketDepth }} </p>
-<input (change)="this.changeNbNodes()" [(ngModel)]="this.nbNodes"/>
+<input (change)="this.changeNbNodes()" (keydown)="this.keyDownNbNodes($event)" [(ngModel)]="this.nbNodes" autofocus/>
+<div class="buttonsWrapper">
+  <div class="buttons">
+    <button (click)="this.addOneNode()">+</button>
+    <button (click)="this.substractOneNode()">-</button>
+  </div>
+</div>
 
 <!-- https://github.com/warisgeek/AngularBinaryTree -->
 <div class="treeWrapper">
@@ -12,7 +18,7 @@
 
       <ng-template #recursiveList let-node>
 
-        <li [class.isWinnerNode]="node.winner !== undefined">
+        <li *ngIf="node" [class.isWinnerNode]="node.winner !== undefined">
           <div class="node" [class.nodeDone]="node.winner !== undefined">
             <div class="matchNumber"> {{ node.matchNumber }} </div>
             <div class="playerWrapper">
@@ -49,7 +55,7 @@
         </li>
       </ng-template>
 
-      <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: this.winnerBracket }"></ng-container>
+<!--      <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: this.winnerBracket }"></ng-container>-->
       <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: this.loserBracket }"></ng-container>
 
     </ul>
