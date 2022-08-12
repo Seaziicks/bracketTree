@@ -443,4 +443,21 @@ export class Bracket implements DoubleBinaryLeaf<Player> {
       return depth;
   }
 
+  setPlayers(players: Player[]) {
+    if(this.player1.isPlayerSet()) {
+      let i = 0;
+      this.player1 = players[this.player1.seed - 1];
+    } else {
+      this.leftChild?.setPlayers(players);
+    }
+
+    if(this.player2.isPlayerSet()) {
+      let i = 0;
+      this.player2 = players[this.player2.seed - 1];
+    } else {
+      this.rightChild?.setPlayers(players);
+    }
+
+  }
+
 }

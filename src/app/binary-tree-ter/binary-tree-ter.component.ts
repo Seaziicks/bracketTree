@@ -10,22 +10,21 @@ import {DoubleEliminationBracket} from "../interface/DoubleEliminationBracket";
 })
 export class BinaryTreeTerComponent implements OnInit {
 
-  @Input() nbNodes: number;
+  @Input() Players: Player[] = [];
+  nbNodes: number = 0;
   depth: number = 0;
   rounds: number = 0;
   loserBracket: Bracket | undefined;
   winnerBracket: Bracket | undefined;
   maxBracketDepth = 0;
 
-  doubleEliminationBracket: DoubleEliminationBracket;
+  doubleEliminationBracket: DoubleEliminationBracket | undefined;
 
-  constructor() {
-    this.nbNodes = 3;
-    this.doubleEliminationBracket = new DoubleEliminationBracket(this.getBasicPlayerArray(this.nbNodes));
-    this.setBrackets();
-  }
+  constructor() { }
 
   async ngOnInit(): Promise<void> {
+    this.nbNodes = this.Players.length;
+    console.log(this.Players);
     this.depth = Math.log2(this.nbNodes) / Math.log2(2);
     this.rounds = Math.log(this.nbNodes) / Math.log(2) - 1;
 
@@ -34,13 +33,13 @@ export class BinaryTreeTerComponent implements OnInit {
     // console.log(this.loserBracket)
 
 
-    await this.setBrackets();
+    await this.setBrackets(this.Players);
     console.log(this.winnerBracket);
   }
 
-  async setBrackets() {
-    this.doubleEliminationBracket = new DoubleEliminationBracket(this.getBasicPlayerArray(this.nbNodes));
-    await this.doubleEliminationBracket.createBrackets();
+  async setBrackets(players: Player[]) {
+    this.doubleEliminationBracket = new DoubleEliminationBracket(this.Players);
+    await this.doubleEliminationBracket.createBrackets(players);
     this.winnerBracket = this.doubleEliminationBracket.winnerBracket;
     this.loserBracket = this.doubleEliminationBracket.loserBracket;
   }
@@ -60,7 +59,7 @@ export class BinaryTreeTerComponent implements OnInit {
 
   changeNbNodes() {
     // console.log(this.nbNodes);
-    this.setBrackets();
+    this.setBrackets(this.Players);
     this.depth = Math.log2(this.nbNodes);
     this.rounds = Math.log(this.nbNodes) / Math.log(2) - 1;
   }

@@ -19,8 +19,9 @@ export class DoubleEliminationBracket {
     this.loserBracket = new Bracket(new Player(1, "Player 1"), new Player(2, "Player 2"), null, 0);
   }
 
-  async createBrackets() {
+  async createBrackets(players: Player[]) {
     this.winnerBracket = this.createWinnerBracket();
+    this.winnerBracket.setPlayers(players);
     this.loserBracket = await this.createLoserBracket();
     this.defineOrder();
   }
@@ -136,6 +137,7 @@ export class DoubleEliminationBracket {
     }
   }
 
+  // Pas fini, car la construction de l'arbre loser ne marche pas encore ...
   hasEmptyLeaf(bracket: Bracket) {
     return true;
   }
