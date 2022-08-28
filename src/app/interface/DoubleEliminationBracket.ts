@@ -57,64 +57,64 @@ export class DoubleEliminationBracket {
 
     public defineOrder() {
 
-        let nbWinnerPlace = 0;
-        let nbLoserPlace = 0;
+        let nbWinnerPlaced = 0;
+        let nbLoserPlaced = 0;
 
         let matchNumber = 1;
-        let loserPlacement = this.loserBracket.maxDepthOfBracket();
-        let winnerPlacement = this.winnerBracket.maxDepthOfBracket();
+        let loserPlacementDepth = this.loserBracket.maxDepthOfBracket();
+        let winnerPlacementDepth = this.winnerBracket.maxDepthOfBracket();
 
-        while (nbWinnerPlace + nbLoserPlace < (this.nbPlayer * 2) - 2 && winnerPlacement >= 0 && loserPlacement >= 0) {
+        while (nbWinnerPlaced + nbLoserPlaced < (this.nbPlayer * 2) - 2 && winnerPlacementDepth >= 0 && loserPlacementDepth >= 0) {
             // console.log('========================================')
-            // console.log('Placement n° %d', maxDepth - winnerPlacement + 1);
-            let winnerMatchs = this.winnerBracket.getSubNodesAtSpecificDepth(1, winnerPlacement);
-            let loserMatchs = this.loserBracket.getSubNodesAtSpecificDepth(1, loserPlacement);
+            // console.log('Placement n° %d', maxDepth - winnerPlacementDepth + 1);
+            let winnerMatchs = this.winnerBracket.getSubNodesAtSpecificDepth(1, winnerPlacementDepth);
+            let loserMatchs = this.loserBracket.getSubNodesAtSpecificDepth(1, loserPlacementDepth);
             // console.log('Sub nodes winner :', winnerMatchs);
             // console.log('Sub nodes loser',loserMatchs);
             // console.log('Loser max depth :', this.loserBracket.maxDepthOfBracket());
-            // console.log('2 * (winnerPlacement - 1):', 2 * (winnerPlacement - 1));
-            // console.log('winnerPlacement :', winnerPlacement);
+            // console.log('2 * (winnerPlacementDepth - 1):', 2 * (winnerPlacementDepth - 1));
+            // console.log('winnerPlacementDepth :', winnerPlacementDepth);
             winnerMatchs.forEach((match) => {
                 if (match.rightChild === undefined && match.leftChild === undefined) {
                     match.matchNumber = matchNumber;
                     matchNumber++;
-                    nbWinnerPlace++;
+                    nbWinnerPlaced++;
                 }
             });
             winnerMatchs.forEach((match) => {
                 if (match.matchNumber === 999) {
                     match.matchNumber = matchNumber;
                     matchNumber++;
-                    nbWinnerPlace++;
+                    nbWinnerPlaced++;
                 }
             });
-            winnerPlacement--;
-            // console.log('nbWinnerPlace :', nbWinnerPlace);
-            // console.log('nbLoserPlace :', nbLoserPlace);
-            // console.log('nbWinnerPlace - nbLoserPlace :', nbWinnerPlace - nbLoserPlace);
+            winnerPlacementDepth--;
+            // console.log('nbWinnerPlaced :', nbWinnerPlaced);
+            // console.log('nbLoserPlaced :', nbLoserPlaced);
+            // console.log('nbWinnerPlaced - nbLoserPlaced :', nbWinnerPlaced - nbLoserPlaced);
             // console.log('loserMatchs.length * 2 :', loserMatchs.length * 2);
             // console.log('loserMatchs.length :', loserMatchs.length);
             //
             //
-            // console.log(nbWinnerPlace - nbLoserPlace > loserMatchs.length * 2)
+            // console.log(nbWinnerPlaced - nbLoserPlaced > loserMatchs.length * 2)
 
-            while (nbWinnerPlace - nbLoserPlace > loserMatchs.length && loserPlacement > 0) {
+            while (nbWinnerPlaced - nbLoserPlaced > loserMatchs.length && loserPlacementDepth > 0) {
                 loserMatchs.forEach((match) => {
                     if (match.rightChild === undefined && match.leftChild === undefined) {
                         match.matchNumber = matchNumber
                         matchNumber++;
-                        nbLoserPlace++;
+                        nbLoserPlaced++;
                     }
                 });
                 loserMatchs.forEach((match) => {
                     if (match.matchNumber === 999) {
                         match.matchNumber = matchNumber;
                         matchNumber++;
-                        nbWinnerPlace++;
+                        nbLoserPlaced++;
                     }
                 });
-                loserPlacement--;
-                loserMatchs = this.loserBracket.getSubNodesAtSpecificDepth(1, loserPlacement);
+                loserPlacementDepth--;
+                loserMatchs = this.loserBracket.getSubNodesAtSpecificDepth(1, loserPlacementDepth);
             }
             // winnerMatchs.sort((a, b) => Math.min(a.player1.seed, a.player2.seed) - Math.min(b.player1.seed, b.player2.seed));
             // console.log('Classé winner :', winnerMatchs);
