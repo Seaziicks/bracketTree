@@ -2,36 +2,50 @@
 <!--<app-binary-tree-bis [nbNodes]="15"></app-binary-tree-bis>-->
 <!--app-binary-tree-ter [nbNodes]="15"></app-binary-tree-ter-->
 <div class="docs-primary-header mat-elevation-z6">
-  <nav class="docs-navbar-header">
-    <a class="mat-focus-indicator docs-button mat-button mat-button-base">
+    <nav class="docs-navbar-header">
+        <a class="mat-focus-indicator docs-button mat-button mat-button-base">
       <span class="mat-button-wrapper">
         <img _ngcontent-abm-c49="" src="../assets/images/626ddd198a3626c2-bracketIcon.svg" alt="angular"
              class="docs-angular-logo">
-        <span _ngcontent-abm-c49="">Bracket</span>
+        <span _ngcontent-abm-c49="">BracketGenerator</span>
       </span>
-    </a>
-    <a> </a>
-  </nav>
+        </a>
+        <button class="mat-focus-indicator docs-button mat-button mat-button-base"
+                (click)="this.state = MenuStates.PlayerList">
+      <span class="mat-button-wrapper">
+        <span _ngcontent-abm-c49="">Players List</span>
+      </span>
+        </button>
+        <button class="mat-focus-indicator docs-button mat-button mat-button-base" [disabled]="this.getPlayerList() && this.getPlayerList().length < 3"
+        (click)="this.state = MenuStates.BracketTree">
+      <span class="mat-button-wrapper">
+        <span _ngcontent-abm-c49="">Bracket Tree</span>
+      </span>
+        </button>
+        <a> </a>
+    </nav>
 </div>
 <main class="main-content ng-star-inserted">
-  <header _ngcontent-abm-c72="" focusonnavigation="" aria-label="Get started" id="homepage-header"
-          class="docs-header-background" tabindex="-1" style="outline: none;">
-    <div _ngcontent-abm-c72="" class="docs-header-section">
-      <div _ngcontent-abm-c72="" class="docs-header-headline"><h1 _ngcontent-abm-c72="" class="mat-h1">Angular
-        Material</h1>
-        <h2 _ngcontent-abm-c72=""> Material Design components for Angular</h2></div>
-      <div _ngcontent-abm-c72="" class="docs-header-start">
-        <a _ngcontent-abm-c72="" mat-raised-button="" routerlink="/guide/getting-started"
-           class="mat-focus-indicator docs-button mat-raised-button mat-button-base"
-           aria-disabled="false" href="/guide/getting-started">
-          <span class="mat-button-wrapper">Get started</span><span matripple="" class="mat-ripple mat-button-ripple">
-        </span>
-          <span class="mat-button-focus-overlay"></span>
-        </a>
-      </div>
+    <!--header _ngcontent-abm-c72="" focusonnavigation="" aria-label="Get started" id="homepage-header"
+            class="docs-header-background" tabindex="-1" style="outline: none;">
+        <div _ngcontent-abm-c72="" class="docs-header-section">
+            <div _ngcontent-abm-c72="" class="docs-header-headline">
+                <h1 _ngcontent-abm-c72="" class="mat-h1">Angular Material</h1>
+                <h2 _ngcontent-abm-c72=""> Material Design components for Angular</h2>
+            </div>
+            <div _ngcontent-abm-c72="" class="docs-header-start">
+                <div _ngcontent-abm-c72="" mat-raised-button="" routerlink=""
+                     class="mat-focus-indicator docs-button mat-raised-button mat-button-base"
+                     aria-disabled="false" href="">
+                    <span class="mat-button-wrapper">Get started</span>
+                    <span matripple="" class="mat-ripple mat-button-ripple"></span>
+                    <span class="mat-button-focus-overlay"></span>
+                </div>
+            </div>
+        </div>
+    </header-->
+    <div class="docs-homepage-promo">
+        <app-player-list *ngIf="this.state === MenuStates.PlayerList" (playerListUpdated)="this.updatePlayerList()" ></app-player-list>
+        <app-binary-tree-ter #Bracket *ngIf="this.getPlayerList() && this.state === MenuStates.BracketTree" [Players]="this.getPlayerList()"></app-binary-tree-ter>
     </div>
-  </header>
-  <div class="docs-homepage-promo">
-    <app-player-list></app-player-list>
-  </div>
 </main>

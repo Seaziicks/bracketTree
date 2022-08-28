@@ -25,6 +25,10 @@ export class Player {
     return this.name
   }
 
+    public getInnerHTMLName(): string {
+        return this.name.replace(/\s/g, '&nbsp;');
+    }
+
   public clone(): Player {
     return new Player(this.seed, "Player " + this.seed);
   }
@@ -36,6 +40,10 @@ export class Player {
   unsetPlayer(): void {
     this.name = ''
     this.seed = 0;
+  }
+
+  static getVoidPlayer() {
+      return new Player(0, '');
   }
 
 }

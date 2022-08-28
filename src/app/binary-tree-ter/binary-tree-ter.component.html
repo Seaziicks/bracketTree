@@ -1,4 +1,4 @@
-<p>binary-tree works!</p>
+<!--p>binary-tree works!</p>
 <p> nbNodes : {{ this.nbNodes }} </p>
 <p> depth : {{ this.depth }} </p>
 <p> rounds : {{ this.rounds }} </p>
@@ -9,55 +9,93 @@
     <button (click)="this.addOneNode()">+</button>
     <button (click)="this.substractOneNode()">-</button>
   </div>
+</div-->
+<div class="buttonsWrapper" _ngcontent-abm-c72="" >
+    <div _ngcontent-abm-c72="" class="docs-header-start" (click)="this.changeBracketView(BracketView.WinnerLoser)"
+    [ngClass]="{'selectedViewButton': this.view === BracketView.WinnerLoser}">
+        <div _ngcontent-abm-c72="" mat-raised-button="" routerlink=""
+             class="mat-focus-indicator docs-button mat-raised-button mat-button-base"
+             aria-disabled="false" href="">
+            <span class="mat-button-wrapper">Winner & Loser</span>
+            <span matripple="" class="mat-ripple mat-button-ripple"></span>
+            <span class="mat-button-focus-overlay"></span>
+        </div>
+    </div>
+    <div _ngcontent-abm-c72="" class="docs-header-start" (click)="this.changeBracketView(BracketView.Winner)"
+         [ngClass]="{'selectedViewButton': this.view === BracketView.Winner}">
+        <div _ngcontent-abm-c72="" mat-raised-button="" routerlink=""
+             class="mat-focus-indicator docs-button mat-raised-button mat-button-base"
+             aria-disabled="false" href="">
+            <span class="mat-button-wrapper">Winner Bracket</span>
+            <span matripple="" class="mat-ripple mat-button-ripple"></span>
+            <span class="mat-button-focus-overlay"></span>
+        </div>
+    </div>
+    <div _ngcontent-abm-c72="" class="docs-header-start" (click)="this.changeBracketView(BracketView.Loser)"
+         [ngClass]="{'selectedViewButton': this.view === BracketView.Loser}">
+        <div _ngcontent-abm-c72="" mat-raised-button="" routerlink=""
+             class="mat-focus-indicator docs-button mat-raised-button mat-button-base"
+             aria-disabled="false" href="">
+            <span class="mat-button-wrapper">Loser Bracket</span>
+            <span matripple="" class="mat-ripple mat-button-ripple"></span>
+            <span class="mat-button-focus-overlay"></span>
+        </div>
+    </div>
 </div>
 
 <!-- https://github.com/warisgeek/AngularBinaryTree -->
 <div class="treeWrapper">
-  <div class="tree">
-    <ul>
+    <div class="tree">
+        <ul>
 
-      <ng-template #recursiveList let-node>
+            <ng-template #recursiveList let-node>
 
-        <li *ngIf="node" [class.isWinnerNode]="node.winner !== undefined">
-          <div class="node" [class.nodeDone]="node.winner !== undefined">
-            <div class="matchNumber"> {{ node.matchNumber }} </div>
-            <div class="playerWrapper">
-              <div class="player player1" [class.isWinner]="node.winner === node.player1">
-                <app-tree-player-bis [player]="node.player1" [canWin]="node.player1.isPlayerSet() && node.player2.isPlayerSet()" [isHighSeeded]="true"
-                                 (playerWonEvent)="this.setWinner(node, $event)"></app-tree-player-bis>
-              </div>
-              <span class="vertical-line"></span>
-              <div class="player player2" [class.isWinner]="node.winner === node.player2">
-                <app-tree-player-bis [player]="node.player2" [canWin]="node.player1.isPlayerSet() && node.player2.isPlayerSet()" [isHighSeeded]="false"
-                                 (playerWonEvent)="this.setWinner(node, $event)"></app-tree-player-bis>
-              </div>
-            </div>
-          </div>
+                <li *ngIf="node" [class.isWinnerNode]="node.winner !== undefined">
+                    <div class="node" [class.nodeDone]="node.winner !== undefined">
+                        <div class="matchNumber"> {{ node.matchNumber }} </div>
+                        <div class="playerWrapper">
+                            <div class="player player1" [class.isWinner]="node.winner === node.player1">
+                                <app-tree-player-bis [player]="node.player1"
+                                                     [canWin]="node.player1.isPlayerSet() && node.player2.isPlayerSet()"
+                                                     [isHighSeeded]="true"
+                                                     (playerWonEvent)="this.setWinner(node, $event)"></app-tree-player-bis>
+                            </div>
+                            <span class="vertical-line"></span>
+                            <div class="player player2" [class.isWinner]="node.winner === node.player2">
+                                <app-tree-player-bis [player]="node.player2"
+                                                     [canWin]="node.player1.isPlayerSet() && node.player2.isPlayerSet()"
+                                                     [isHighSeeded]="false"
+                                                     (playerWonEvent)="this.setWinner(node, $event)"></app-tree-player-bis>
+                            </div>
+                        </div>
+                    </div>
 
-          <ul *ngIf="node.rightChild !== undefined || node.leftChild !== undefined"
-              [class.hasTwoWinnerNode]="node.leftChild && node.rightChild && node.leftChild.winner !== undefined && node.rightChild.winner !== undefined"
-              [class.emptyLeftChild]="node.leftChild === undefined"
-              [class.emptyRightChild]="node.rightChild === undefined">
-<!--            <ng-template [ngIf]="node.leftChild !== undefined" [ngIfElse]="emptyChild">-->
-            <ng-template [ngIf]="node.leftChild !== undefined">
-              <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: node.leftChild }"></ng-container>
+                    <ul *ngIf="node.rightChild !== undefined || node.leftChild !== undefined"
+                        [class.hasTwoWinnerNode]="node.leftChild && node.rightChild && node.leftChild.winner !== undefined && node.rightChild.winner !== undefined"
+                        [class.emptyLeftChild]="node.leftChild === undefined"
+                        [class.emptyRightChild]="node.rightChild === undefined">
+                        <!--            <ng-template [ngIf]="node.leftChild !== undefined" [ngIfElse]="emptyChild">-->
+                        <ng-template [ngIf]="node.leftChild !== undefined">
+                            <ng-container
+                                *ngTemplateOutlet="recursiveList; context:{ $implicit: node.leftChild }"></ng-container>
+                        </ng-template>
+                        <!--            <ng-template #emptyChild>-->
+                        <!--              <li class="emptyLiChild">-->
+                        <!--                <div class="node"></div>-->
+                        <!--              </li>-->
+                        <!--            </ng-template>-->
+                        <!--            <ng-template [ngIf]="node.rightChild !== undefined" [ngIfElse]="emptyChild">-->
+                        <ng-template [ngIf]="node.rightChild !== undefined">
+                            <ng-container
+                                *ngTemplateOutlet="recursiveList; context:{ $implicit: node.rightChild }"></ng-container>
+                        </ng-template>
+                    </ul>
+                </li>
             </ng-template>
-<!--            <ng-template #emptyChild>-->
-<!--              <li class="emptyLiChild">-->
-<!--                <div class="node"></div>-->
-<!--              </li>-->
-<!--            </ng-template>-->
-<!--            <ng-template [ngIf]="node.rightChild !== undefined" [ngIfElse]="emptyChild">-->
-            <ng-template [ngIf]="node.rightChild !== undefined">
-              <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: node.rightChild }"></ng-container>
-            </ng-template>
-          </ul>
-        </li>
-      </ng-template>
 
-      <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: this.winnerBracket }"></ng-container>
-      <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: this.loserBracket }"></ng-container>
+            <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: this.displayedBracket }"></ng-container>
+            <!--ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: this.loserBracket }"></ng-container-->
 
-    </ul>
-  </div>
+        </ul>
+    </div>
 </div>

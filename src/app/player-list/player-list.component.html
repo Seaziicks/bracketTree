@@ -1,46 +1,50 @@
-<div>
-  <form class="example-form">
-    <mat-form-field class="example-full-width" appearance="fill">
-      <mat-label>Nom du joueur</mat-label>
-      <input type="text" matInput #playerNameInput [formControl]="playerNameFormControl" [errorStateMatcher]="matcher"
-             placeholder="Ex. Jaffar"
-             (keydown.enter)="addPlayer(playerNameInput.value)">
-      <!--mat-hint>Errors appear instantly!</mat-hint-->
-      <mat-error *ngIf="playerNameFormControl.hasError('required')">
-        Le nom du joueur est <strong>requis</strong>
-      </mat-error>
-    </mat-form-field>
-  </form>
-</div>
+<div style="display: flex; flex-flow: column; justify-content: center;">
+    <ng-container *ngTemplateOutlet="nameFormInput"></ng-container>
 
-<div *ngIf="this.Players.length > 0" cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-  <div class="example-box" *ngFor="let player of this.Players" cdkDrag>{{ player.getSeed() }} - {{ player.getName() }}</div>
-</div>
+    <div *ngIf="this.getPlayerList().length > 0" cdkDropList class="example-list" (cdkDropListDropped)="drop($event)"
+         style="align-self: center">
+        <div class="example-box" *ngFor="let player of this.getPlayerList()" cdkDrag
+             [innerHTML]="player.getSeed() + ' - ' + player.getInnerHTMLName()"></div>
+    </div>
 
-<div>
-  <form class="example-form">
-    <mat-form-field class="example-full-width" appearance="fill">
-      <mat-label>Nom du joueur</mat-label>
-      <input type="text" matInput #playerNameInput [formControl]="playerNameFormControl" [errorStateMatcher]="matcher"
-             placeholder="Ex. Jaffar"
-             (keydown.enter)="addPlayer(playerNameInput.value)">
-      <!--mat-hint>Errors appear instantly!</mat-hint-->
-      <mat-error *ngIf="playerNameFormControl.hasError('required')">
-        Le nom du joueur est <strong>requis</strong>
-      </mat-error>
-    </mat-form-field>
-  </form>
-</div>
+    <ng-container *ngTemplateOutlet="nameFormInput"></ng-container>
 
-<div _ngcontent-abm-c72="" class="docs-header-start">
-  <a _ngcontent-abm-c72="" mat-raised-button="" routerlink="/guide/getting-started"
-     class="mat-focus-indicator docs-button mat-raised-button mat-button-base"
-     aria-disabled="false"
-     (click)="this.generateTree()">
-    <span class="mat-button-wrapper"> Générer l'arbre </span>
-    <span matripple="" class="mat-ripple mat-button-ripple"></span>
-    <span class="mat-button-focus-overlay"></span>
-  </a>
+    <!--div _ngcontent-abm-c72="" class="docs-header-start">
+        <a _ngcontent-abm-c72="" mat-raised-button="" routerlink="/guide/getting-started"
+           class="mat-focus-indicator docs-button mat-raised-button mat-button-base"
+           aria-disabled="false"
+           (click)="this.onPlayerListUpdate()">
+            <span class="mat-button-wrapper"> Générer l'arbre </span>
+            <span matripple="" class="mat-ripple mat-button-ripple"></span>
+            <span class="mat-button-focus-overlay"></span>
+        </a>
+    </div-->
 </div>
+<!--app-binary-tree-ter #Bracket *ngIf="this.displayTree" [Players]="this.Players"></app-binary-tree-ter-->
 
-<app-binary-tree-ter #Bracket *ngIf="this.displayTree" [Players]="this.Players"></app-binary-tree-ter>
+
+<ng-template #nameFormInput>
+    <div style="width: 100%; display: flex; justify-content: center;">
+        <form class="example-form">
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Nom du joueur</mat-label>
+                <input type="text" matInput #playerNameInput [formControl]="playerNameFormControl"
+                       [errorStateMatcher]="matcher"
+                       placeholder="Ex. Jaffar"
+                       (keydown.enter)="addPlayer(playerNameInput.value)">
+                <!--mat-hint>Errors appear instantly!</mat-hint-->
+                <mat-error *ngIf="playerNameFormControl.hasError('required')">
+                    Le nom du joueur est <strong>requis</strong>
+                </mat-error>
+                <mat-error
+                    *ngIf="playerNameFormControl.hasError('forbiddenEmptyName') && !playerNameFormControl.hasError('required')">
+                    Le nom du joueur <strong>ne peut être vide</strong>
+                </mat-error>
+                <mat-error *ngIf="playerNameFormControl.hasError('alreadyExistingName')
+          && !playerNameFormControl.hasError('forbiddenEmptyName') && !playerNameFormControl.hasError('required')">
+                    Le nom du joueur <strong>existe déjà</strong>, à quelques espaces près, peut-être.
+                </mat-error>
+            </mat-form-field>
+        </form>
+    </div>
+</ng-template>

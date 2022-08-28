@@ -1,72 +1,75 @@
+@import "../app.component.css";
+
 .tree {
-  overflow: auto;
-  padding-bottom: 10px;
-  min-height: 600px;
-  background-color: #272A33;
-  width: max-content;
+    overflow: auto;
+    padding-bottom: 10px;
+    min-height: 600px;
+    background-color: #272A33;
+    width: max-content;
 }
 
 .tree ul {
-  position: relative;
-  padding: 0 1em;
-  white-space: nowrap;
-  margin: auto 0;
-  text-align: center;
+    position: relative;
+    padding: 0 1em;
+    white-space: nowrap;
+    margin: auto 0;
+    text-align: center;
 }
 
 .tree li {
-  /*display: inline-block;*/
-  vertical-align: top;
-  text-align: center;
-  list-style-type: none;
-  position: relative;
-  padding: 0.5em 1em 0.5em 0;
-  display: flex;
-  flex-flow: row-reverse;
-  align-items: center;
+    /*display: inline-block;*/
+    vertical-align: top;
+    text-align: center;
+    list-style-type: none;
+    position: relative;
+    padding: 0.5em 1em 0.5em 0;
+    display: flex;
+    flex-flow: row-reverse;
+    align-items: center;
 }
 
 .tree li .node, .tree li .node + ul li .node {
-  border: 1px solid transparent;
+    border: 1px solid transparent;
 }
 
 .tree li .node:hover, .tree li .node:hover + ul li .node {
-  background: #c8e4f8;
-  color: #000;
-  border-color: #94a0b4;
+    background: #c8e4f8;
+    color: #000;
+    border-color: #94a0b4;
 }
 
 /*Connector styles on hover*/
 .tree li .node:hover + ul li::after, .tree li .node:hover + ul li::before, .tree li .node:hover + ul::before, .tree li .node:hover + ul ul::before {
-  border-color: #94a0b4;
+    border-color: #94a0b4;
 }
 
 .tree ul::after {
-  content: '';
-  display: table;
-  clear: both;
+    content: '';
+    display: table;
+    clear: both;
 }
 
 .tree li::before, .tree li::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  bottom: 50%;
-  border-right: 1px solid #ccc;
-  height: 50%;
-  width: 1em;
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 50%;
+    border-right: 1px solid #ccc;
+    height: 50%;
+    width: 1em;
 }
 
 .tree li::after {
-  bottom: auto;
-  top: 50%;
-  border-top: 1px solid #ccc;
-  /*background-color: red;*/
+    bottom: auto;
+    top: 50%;
+    border-top: 1px solid #ccc;
+    /*background-color: red;*/
 }
 
 .tree li:only-child::after, .tree li:only-child::before, .tree li.emptyLiChild::after, .tree li.emptyLiChild::before {
-  display: none;
+    display: none;
 }
+
 /* Pour empecher d'avoir un reliquat à droite au début*/
 /*.tree > ul > li::after, .tree > ul > li::before {*/
 /*  display: none;*/
@@ -77,171 +80,181 @@
 /*}*/
 
 .tree li:first-child::before, .tree li:last-child::after, .tree li.emptyLiChild::after, .tree li.emptyLiChild::before {
-  border: 0 none;
-  display: none;
+    border: 0 none;
+    display: none;
 }
 
 .emptyLiChild {
-  display: none;
+    display: none;
 }
+
 .emptyLiChild:hover {
-  display: none;
+    display: none;
 }
 
 .tree li:last-child::before {
-  border-bottom: 1px solid #ccc;
-  border-radius: 0 0 5px 0;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0 0 5px 0;
 }
 
 .tree li:first-child::after {
-  border-radius: 0 5px 0 0;
+    border-radius: 0 5px 0 0;
 }
 
 .tree ul ul::before {
-  content: '';
-  position: absolute;
-  right: 0;
-  bottom: 50%;
-  border-top: 1px solid #ccc;
-  height: 0;
-  width: 1em;
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 50%;
+    border-top: 1px solid #ccc;
+    height: 0;
+    width: 1em;
 }
 
 .tree li:first-child::before {
-  content: '';
-  text-align: right;
-  padding-left: 5px;
-  /*right: 53%;*/
-  top: -2px;
-  vertical-align: top;
+    content: '';
+    text-align: right;
+    padding-left: 5px;
+    /*right: 53%;*/
+    top: -2px;
+    vertical-align: top;
 }
 
 .tree li:last-child::after {
-  content: '';
-  text-align: left;
-  padding-left: 5px;
-  left: 53%;
-  top: -2px;
-  bottom: 50%;
+    content: '';
+    text-align: left;
+    padding-left: 5px;
+    left: 53%;
+    top: -2px;
+    bottom: 50%;
 }
 
 .node {
-  min-width: 150px;
-  min-height: 75px;
-  cursor: default;
-  /*display: inline-block;*/
-  display: flex;
-  line-height: 1.3em;
-  border-radius: 4px;
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
-  position: relative;
-  /*
-  background: #fff;
-  background: -moz-linear-gradient(top, #fff 0%, #fbfbfb 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fff), color-stop(100%, #fbfbfb));
-  background: -webkit-linear-gradient(top, #fff 0%, #fbfbfb 100%);
-  background: -o-linear-gradient(top, #fff 0%, #fbfbfb 100%);
-  background: -ms-linear-gradient(top, #fff 0%, #fbfbfb 100%);
-  background: linear-gradient(to bottom, #fff 0%, #fbfbfb 100%);
-  border: 1px solid #e7e7e7;
-  box-shadow: 1px 1px 1px 1px #ddd;
-  padding: 5px;
-  */
+    min-width: 150px;
+    min-height: 75px;
+    cursor: default;
+    /*display: inline-block;*/
+    display: flex;
+    line-height: 1.3em;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    position: relative;
+    /*
+    background: #fff;
+    background: -moz-linear-gradient(top, #fff 0%, #fbfbfb 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fff), color-stop(100%, #fbfbfb));
+    background: -webkit-linear-gradient(top, #fff 0%, #fbfbfb 100%);
+    background: -o-linear-gradient(top, #fff 0%, #fbfbfb 100%);
+    background: -ms-linear-gradient(top, #fff 0%, #fbfbfb 100%);
+    background: linear-gradient(to bottom, #fff 0%, #fbfbfb 100%);
+    border: 1px solid #e7e7e7;
+    box-shadow: 1px 1px 1px 1px #ddd;
+    padding: 5px;
+    */
 }
 
 .playerWrapper {
-  min-height: inherit;
-  display: flex;
-  flex-flow: column;
-  align-items: stretch;
-  flex-grow: 1;
+    min-height: inherit;
+    display: flex;
+    flex-flow: column;
+    align-items: stretch;
+    flex-grow: 1;
 }
 
 .player {
-  margin: 0;
-  font-size: 13px;
-  font-weight: normal;
-  white-space: normal;
-  width: 100%;
-  flex-grow: 1;
-  display: flex;
-  /*background: coral;*/
+    margin: 0;
+    font-size: 13px;
+    font-weight: normal;
+    white-space: normal;
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    /*background: coral;*/
 }
 
 .player > * {
-  flex-grow: 1;
-  display: flex;
+    flex-grow: 1;
+    display: flex;
 }
 
 .player1 {
-  border-radius: 0 15px 15px 0;
+    border-radius: 0 15px 15px 0;
 }
 
 div.tree .player:hover {
-  background: #f2f2f4;
+    background: #f2f2f4;
 }
 
 div.tree .player {
-  border-radius: 5px;
+    border-radius: 5px;
 }
 
 .vertical-line {
-  height: auto;
-  border-bottom: 1px solid black;
+    height: auto;
+    border-bottom: 1px solid black;
 }
 
 .tree ul.emptyLeftChild > li {
-  margin-top: 45px;
+    margin-top: 45px;
 }
 
 .tree ul.emptyRightChild > li {
-  margin-bottom: 45px;
+    margin-bottom: 45px;
 }
 
 .tree ul.emptyLeftChild > li::before, .tree ul.emptyRightChild > li::before {
-  display: block;
-  content: '';
-  position: absolute;
-  right: 0;
-  border-right: 1px solid #ccc;
-  width: 1em;
+    display: block;
+    content: '';
+    position: absolute;
+    right: 0;
+    border-right: 1px solid #ccc;
+    width: 1em;
 }
 
 .tree ul.emptyLeftChild > li::before {
-  border-bottom: 1px solid #ccc;
-  border-radius: 0 0 5px 0;
-  height: 22.5px;
-  bottom: 50%;
-  top: unset;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0 0 5px 0;
+    height: 22.5px;
+    bottom: 50%;
+    top: unset;
 }
 
 .tree ul.emptyRightChild > li::before {
-  border-top: 1px solid #ccc;
-  border-radius: 0 5px 0 0;
-  height: 21px;
-  top: 50%;
-  border-bottom: unset;
+    border-top: 1px solid #ccc;
+    border-radius: 0 5px 0 0;
+    height: 21px;
+    top: 50%;
+    border-bottom: unset;
 }
 
 .matchNumber {
-  align-self: center;
-  color: wheat;
-  margin-right: 3px;
+    align-self: center;
+    color: wheat;
+    margin-right: 3px;
 }
 
 .buttonsWrapper {
-  display: inline-block;
-  flex-flow: column;
-  top: -50%;
+    display: flex;
+    flex-flow: wrap;
+    margin-bottom: 15px;
+    justify-content: center;
 }
+
+.docs-header-start {
+    margin-right: 15px;
+}
+
+.selectedViewButton, .selectedViewButton * {
+    background: #e91e63;
+}
+
+.selectedViewButton {
+    border-radius: 5px;
+}
+
 
 .buttons {
-  display: flex;
-  flex-flow: column;
-
-}
-
-.buttons button {
-
+    display: flex;
+    flex-flow: column;
 }

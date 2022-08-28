@@ -13,13 +13,13 @@ export class Bracket implements DoubleBinaryLeaf<Player> {
 
   maxDepth: number;
 
-  constructor(player1: Player, player2: Player, parent: Bracket | null, maxDepth: number) {
+  constructor(player1: Player, player2: Player, parent: Bracket | null, maxDepth: number, leftChild : Bracket | undefined = undefined, rightChild : Bracket | undefined = undefined) {
     this.player1 = player1;
     this.player2 = player2;
 
     this.parent = parent;
-    this.leftChild = undefined;
-    this.rightChild = undefined;
+    this.leftChild = leftChild;
+    this.rightChild = rightChild;
 
     this.maxDepth = maxDepth;
   }
