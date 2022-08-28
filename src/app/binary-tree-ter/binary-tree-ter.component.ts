@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Bracket} from "../interface/bracket";
 import {Player} from "../interface/doubleLeaf";
 import {DoubleEliminationBracket} from "../interface/DoubleEliminationBracket";
+import {PlayerListService} from "../player-list.service";
 
 export enum BracketView {
     WinnerLoser,
@@ -50,8 +51,8 @@ export class BinaryTreeTerComponent implements OnInit {
     }
 
     async setBrackets(players: Player[]) {
-        this.doubleEliminationBracket = new DoubleEliminationBracket(this.Players);
-        await this.doubleEliminationBracket.createBrackets(players);
+        this.doubleEliminationBracket = new DoubleEliminationBracket(PlayerListService.getPlayerList());
+        await this.doubleEliminationBracket.createBrackets(PlayerListService.getPlayerList());
         this.winnerBracket = this.doubleEliminationBracket.winnerBracket;
         this.loserBracket = this.doubleEliminationBracket.loserBracket;
     }
@@ -68,34 +69,42 @@ export class BinaryTreeTerComponent implements OnInit {
         }
     }
 
-    changeNbNodes() {
+    async changeNbNodes() {
         // console.log(this.nbNodes);
-        this.setBrackets(this.Players);
+        await this.setBrackets(PlayerListService.getPlayerList());
         this.depth = Math.log2(this.nbNodes);
         this.rounds = Math.log(this.nbNodes) / Math.log(2) - 1;
+        await this.changeBracketView(this.view);
     }
 
-    addOneNode() {
+    async addOneNode() {
         this.nbNodes++;
-        this.changeNbNodes();
+        PlayerListService.addPlayerToList('' + (PlayerListService.getPlayerList().length + 1));
+        await this.changeNbNodes();
     }
 
-    substractOneNode() {
+    async substractOneNode() {
         this.nbNodes--;
-        this.changeNbNodes();
+        PlayerListService.removeLastPlayer();
+        await this.changeNbNodes();
     }
 
-    keyDownNbNodes(event: any) {
+    async keyDownNbNodes(event: any) {
         if (event.key === '+') {
             event.preventDefault();
-            this.addOneNode();
+            await this.addOneNode();
         } else if (event.key === '-') {
             event.preventDefault();
-            this.substractOneNode();
+            await this.substractOneNode();
         } else if (event.key === 'ArrowLeft') {
-            this.substractOneNode();
+            await this.substractOneNode();
         } else if (event.key === 'ArrowRight') {
-            this.addOneNode();
+            await this.addOneNode();
+        }
+        else if (event.key === 'ArrowDown') {
+            await this.substractOneNode();
+        } else if (event.key === 'ArrowUp') {
+            await this.addOneNode();
         }
     }
 

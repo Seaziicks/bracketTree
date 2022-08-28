@@ -2,14 +2,14 @@
 <p> nbNodes : {{ this.nbNodes }} </p>
 <p> depth : {{ this.depth }} </p>
 <p> rounds : {{ this.rounds }} </p>
-<p> maxBracketDepth : {{ this.maxBracketDepth }} </p>
-<input (change)="this.changeNbNodes()" (keydown)="this.keyDownNbNodes($event)" [(ngModel)]="this.nbNodes" autofocus/>
+<p> maxBracketDepth : {{ this.maxBracketDepth }} </p-->
 <div class="buttonsWrapper">
-  <div class="buttons">
+    <input style="display: flex" (change)="this.changeNbNodes()" (keydown)="this.keyDownNbNodes($event)" [(ngModel)]="this.nbNodes" autofocus/>
+    <div class="buttons">
     <button (click)="this.addOneNode()">+</button>
     <button (click)="this.substractOneNode()">-</button>
   </div>
-</div-->
+</div>
 <div class="buttonsWrapper" _ngcontent-abm-c72="" >
     <div _ngcontent-abm-c72="" class="docs-header-start" (click)="this.changeBracketView(BracketView.WinnerLoser)"
     [ngClass]="{'selectedViewButton': this.view === BracketView.WinnerLoser}">
