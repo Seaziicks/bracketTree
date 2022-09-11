@@ -20,7 +20,7 @@ export class AppComponent {
     @ViewChild(BinaryTreeTerComponent) Bracket: BinaryTreeTerComponent | undefined;
 
     async updatePlayerList() {
-        await this.Bracket?.setBrackets(PlayerListService.getPlayerList());
+        await this.Bracket?.setBrackets();
     }
 
     getPlayerList(): Player[] {

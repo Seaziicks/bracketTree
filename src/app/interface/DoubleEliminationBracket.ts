@@ -1,6 +1,7 @@
-import {Bracket} from "./bracket";
+import {Bracket} from "./Bracket";
 import {Player} from "./doubleLeaf";
-import {delay} from "rxjs/operators";
+import {WinnerBracket} from "./WinnerBracket";
+import {LoserBracket} from "./LoserBracket";
 
 // https://challonge.com/fr/otournament5
 export class DoubleEliminationBracket {
@@ -28,7 +29,7 @@ export class DoubleEliminationBracket {
     }
 
     createWinnerBracket() {
-        let winnerBracket = new Bracket(new Player(1, "Player 1"), new Player(2, "Player 2"), null, 0);
+        let winnerBracket = new WinnerBracket(new Player(1, "Player 1"), new Player(2, "Player 2"), null, 0);
         const layeredDepth = Math.floor(Math.log2(this.nbPlayer) / Math.log2(2));
         winnerBracket.createNewLayers(1, layeredDepth);
         for (let i = 0; i < this.nbPlayer - Math.pow(2, layeredDepth); i++) {
@@ -39,7 +40,7 @@ export class DoubleEliminationBracket {
 
     async createLoserBracket() {
         console.log('=======================================')
-        let loserBracket = new Bracket(new Player(1, "Player 1"), new Player(2, "Player 2"), null, 0);
+        let loserBracket = new LoserBracket(new Player(1, "Player 1"), new Player(2, "Player 2"), null, 0);
 
         // Ici on essaye de traficoter pour avoir le nombre qu'on veut.
         // const layeredDepth = Math.floor(Math.log2(this.nbPlayer - 1) / Math.log2(2));
@@ -123,11 +124,11 @@ export class DoubleEliminationBracket {
     }
 
     public defineLoserPlacement() {
-        let nbWinnerPlace = 0;
-        let nbLoserPlace = 0;
-
-        let matchNumber = 1;
-        let loserPlacement = this.loserBracket.maxDepthOfBracket();
+        // let nbWinnerPlace = 0;
+        // let nbLoserPlace = 0;
+        //
+        // let matchNumber = 1;
+        // let loserPlacement = this.loserBracket.maxDepthOfBracket();
         let winnerPlacement = this.winnerBracket.maxDepthOfBracket();
 
         while (this.hasEmptyLeaf(this.loserBracket)) {

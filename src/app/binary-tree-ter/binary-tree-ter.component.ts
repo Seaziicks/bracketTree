@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Bracket} from "../interface/bracket";
+import {Bracket} from "../interface/Bracket";
 import {Player} from "../interface/doubleLeaf";
 import {DoubleEliminationBracket} from "../interface/DoubleEliminationBracket";
 import {PlayerListService} from "../player-list.service";
@@ -25,7 +25,7 @@ export class BinaryTreeTerComponent implements OnInit {
     winnerBracket: Bracket | undefined;
     maxBracketDepth = 0;
     BracketView = BracketView;
-    view: BracketView = BracketView.WinnerLoser;
+    view: BracketView = BracketView.Loser;
 
     doubleEliminationBracket: DoubleEliminationBracket | undefined;
 
@@ -45,12 +45,12 @@ export class BinaryTreeTerComponent implements OnInit {
         // console.log(this.loserBracket)
 
 
-        await this.setBrackets(this.Players);
-        this.displayWinnerLoserBracket();
+        await this.setBrackets();
+        await this.changeBracketView(this.view);
         console.log(this.winnerBracket);
     }
 
-    async setBrackets(players: Player[]) {
+    async setBrackets() {
         this.doubleEliminationBracket = new DoubleEliminationBracket(PlayerListService.getPlayerList());
         await this.doubleEliminationBracket.createBrackets(PlayerListService.getPlayerList());
         this.winnerBracket = this.doubleEliminationBracket.winnerBracket;
@@ -71,7 +71,8 @@ export class BinaryTreeTerComponent implements OnInit {
 
     async changeNbNodes() {
         // console.log(this.nbNodes);
-        await this.setBrackets(PlayerListService.getPlayerList());
+        console.clear();
+        await this.setBrackets();
         this.depth = Math.log2(this.nbNodes);
         this.rounds = Math.log(this.nbNodes) / Math.log(2) - 1;
         await this.changeBracketView(this.view);
@@ -110,7 +111,7 @@ export class BinaryTreeTerComponent implements OnInit {
 
     async changeBracketView(view: BracketView) {
         this.view = view;
-        await this.setBrackets(this.Players);
+        await this.setBrackets();
         switch (this.view) {
             case BracketView.WinnerLoser:
                 this.displayWinnerLoserBracket();

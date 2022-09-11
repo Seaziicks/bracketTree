@@ -83,7 +83,7 @@ export class PlayerListComponent implements OnInit {
 
     async generateTree() {
         this.displayTree = true;
-        await this.Bracket?.setBrackets(PlayerListService.getPlayerList());
+        await this.Bracket?.setBrackets();
     }
 
     onPlayerListUpdate() {

@@ -9,7 +9,7 @@
     "src/main.ts",
     "src/polyfills.ts",
     "src/app/interface/doubleLeaf.ts",
-    "src/app/interface/bracket.ts"
+    "src/app/interface/Bracket.ts"
   ],
   "include": [
     "src/**/*.d.ts"
