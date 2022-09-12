@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Bracket} from "../interface/Bracket";
-import {Player} from "../interface/doubleLeaf";
+import {Player} from "../interface/DoubleLeaf";
 import {DoubleEliminationBracket} from "../interface/DoubleEliminationBracket";
 import {PlayerListService} from "../player-list.service";
 

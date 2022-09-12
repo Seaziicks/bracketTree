@@ -8,7 +8,7 @@
   "files": [
     "src/main.ts",
     "src/polyfills.ts",
-    "src/app/interface/doubleLeaf.ts",
+    "src/app/interface/DoubleLeaf.ts",
     "src/app/interface/Bracket.ts"
   ],
   "include": [

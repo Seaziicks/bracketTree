@@ -1,4 +1,4 @@
-import {DoubleBinaryLeaf, Player} from "./doubleLeaf";
+import {DoubleBinaryLeaf, Player} from "./DoubleLeaf";
 // https://www.printyourbrackets.com/36seeded.html
 // https://www.printyourbrackets.com/pdfbrackets/36-team-portrait-seeded.pdf
 export class Bracket implements DoubleBinaryLeaf<Player> {

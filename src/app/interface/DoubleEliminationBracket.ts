@@ -1,5 +1,5 @@
 import {Bracket} from "./Bracket";
-import {Player} from "./doubleLeaf";
+import {Player} from "./DoubleLeaf";
 import {WinnerBracket} from "./WinnerBracket";
 import {LoserBracket} from "./LoserBracket";
 
