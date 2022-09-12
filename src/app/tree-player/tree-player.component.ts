@@ -3,10 +3,10 @@ import {Player} from "../interface/doubleLeaf";
 
 @Component({
   selector: 'app-tree-player-bis',
-  templateUrl: './tree-player-bis.component.html',
-  styleUrls: ['./tree-player-bis.component.css']
+  templateUrl: './tree-player.component.html',
+  styleUrls: ['./tree-player.component.css']
 })
-export class TreePlayerBisComponent implements OnInit {
+export class TreePlayerComponent implements OnInit {
 
   @Input() player: Player | undefined;
   @Input() canWin: boolean = false;

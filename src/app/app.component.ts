@@ -1,6 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {Player} from "./interface/doubleLeaf";
-import {BinaryTreeTerComponent} from "./binary-tree-ter/binary-tree-ter.component";
+import {BinaryTreeComponent} from "./binary-tree/binary-tree.component";
 import {PlayerListService} from "./player-list.service";
 
 export enum MenuStates {
@@ -17,7 +17,7 @@ export class AppComponent {
     title = 'bracketTree';
     state: MenuStates = MenuStates.PlayerList;
     MenuStates = MenuStates;
-    @ViewChild(BinaryTreeTerComponent) Bracket: BinaryTreeTerComponent | undefined;
+    @ViewChild(BinaryTreeComponent) Bracket: BinaryTreeComponent | undefined;
 
     async updatePlayerList() {
         await this.Bracket?.setBrackets();

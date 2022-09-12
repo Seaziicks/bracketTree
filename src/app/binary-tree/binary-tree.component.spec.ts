@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BinaryTreeTerComponent } from './binary-tree-ter.component';
+import { BinaryTreeComponent } from './binary-tree.component';
 
 describe('BinaryTreeTerComponent', () => {
-  let component: BinaryTreeTerComponent;
-  let fixture: ComponentFixture<BinaryTreeTerComponent>;
+  let component: BinaryTreeComponent;
+  let fixture: ComponentFixture<BinaryTreeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BinaryTreeTerComponent ]
+      declarations: [ BinaryTreeComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BinaryTreeTerComponent);
+    fixture = TestBed.createComponent(BinaryTreeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

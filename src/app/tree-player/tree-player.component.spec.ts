@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TreePlayerBisComponent } from './tree-player-bis.component';
+import { TreePlayerComponent } from './tree-player.component';
 
 describe('TreePlayerBisComponent', () => {
-  let component: TreePlayerBisComponent;
-  let fixture: ComponentFixture<TreePlayerBisComponent>;
+  let component: TreePlayerComponent;
+  let fixture: ComponentFixture<TreePlayerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TreePlayerBisComponent ]
+      declarations: [ TreePlayerComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TreePlayerBisComponent);
+    fixture = TestBed.createComponent(TreePlayerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

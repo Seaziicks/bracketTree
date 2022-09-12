@@ -11,7 +11,7 @@ import {
 import {ErrorStateMatcher} from "@angular/material/core";
 import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
 import {Player} from "../interface/doubleLeaf";
-import {BinaryTreeTerComponent} from "../binary-tree-ter/binary-tree-ter.component";
+import {BinaryTreeComponent} from "../binary-tree/binary-tree.component";
 import {PlayerListService} from "../player-list.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -45,7 +45,7 @@ export function alreadyExistingNameNameValidator(): ValidatorFn {
 })
 export class PlayerListComponent implements OnInit {
 
-    @ViewChild(BinaryTreeTerComponent) Bracket: BinaryTreeTerComponent | undefined;
+    @ViewChild(BinaryTreeComponent) Bracket: BinaryTreeComponent | undefined;
     @ViewChild('playerNameInput') playerNameInput: any;
     @Output() playerListUpdated = new EventEmitter<Player[]>();
 

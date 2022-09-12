@@ -12,10 +12,10 @@ export enum BracketView {
 
 @Component({
     selector: 'app-binary-tree-ter',
-    templateUrl: './binary-tree-ter.component.html',
-    styleUrls: ['./binary-tree-ter.component.css']
+    templateUrl: './binary-tree.component.html',
+    styleUrls: ['./binary-tree.component.css']
 })
-export class BinaryTreeTerComponent implements OnInit {
+export class BinaryTreeComponent implements OnInit {
 
     @Input() Players: Player[] = [];
     nbNodes: number = 0;
