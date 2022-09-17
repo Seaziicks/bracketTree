@@ -82,6 +82,13 @@ export class DoubleEliminationBracket {
             for (let i = 2; i < this.nbPlayer; i++) {
                 console.log('-----------------------------');
                 console.log("i < this.nbPlayer : ", i + " < " + this.nbPlayer);
+                /*
+                 * Cette partie par en cacahuete, car le schema que je copie est delirant.
+                 * Il faut regarder dans la partie Screenshot pour comprendre.
+                 * Se concentrer uniquement sur l'arbre loser, et voir quels matchs sont affectes.
+                 * Les problemes apparaissent pour chaque 2^n, avec un melange incomprehensible, que j'ai essaye de mimer jusqu'a 32.
+                 * Et encore, c'est pas vraiment fait, mais disons que pour l'instant, ça me convient !
+                 */
                 if (lastWinnerPlaced &&
                     Math.floor(Math.log2(lastWinnerPlaced.player2.getSeed()) / Math.log2(2)) === Math.log2(lastWinnerPlaced.player2.getSeed()) / Math.log2(2) &&
                     loserBracket.rightChild && Math.log2(lastWinnerPlaced.player2.getSeed()) / Math.log2(2) !== 2) {
