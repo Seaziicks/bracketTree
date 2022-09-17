@@ -1,6 +1,14 @@
-<div class="playerPart" [class.invisblePlayer]="!player.isPlayerSet()" *ngIf="player" [ngClass]="this.isHighSeeded ? 'topPlayer' : 'bottomPlayer' ">
-  <div class="playerSeed"> {{ player.getSeed() }} </div>
-  <div class="playerName" [innerHTML]="' ' + player.getInnerHTMLName() + ' '"></div>
-  <!--div> {{ this.score }} </div>
-  <button *ngIf="this.canWin" (click)="this.playerWon()">WIN</button-->
+<div class="playerPart" [class.invisblePlayer]="!player.isPlayerSet() && !this.match" *ngIf="player"
+     [ngClass]="this.isHighSeeded ? 'topPlayer' : 'bottomPlayer' ">
+    <ng-container *ngIf="this.player.isPlayerSet(); else matchToCome">
+        <div class="playerSeed"> {{ player.getSeed() }} </div>
+        <div class="playerName" [innerHTML]="' ' + player.getInnerHTMLName() + ' '"></div>
+        <!--div> {{ this.score }} </div>
+        <button *ngIf="this.canWin" (click)="this.playerWon()">WIN</button-->
+    </ng-container>
+    <ng-template #matchToCome>
+        <div class="playerSeed"> ok </div>
+        <div class="playerName" [innerHTML]="' Perdant de ' + this.match?.matchNumber ?? 'cool' + ' '"></div>
+    </ng-template>
 </div>
+

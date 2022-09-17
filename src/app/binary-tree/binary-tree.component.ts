@@ -3,6 +3,7 @@ import {Bracket} from "../interface/Bracket";
 import {Player} from "../interface/Player";
 import {DoubleEliminationBracket} from "../interface/DoubleEliminationBracket";
 import {PlayerListService} from "../player-list.service";
+import {LoserBracket} from "../interface/LoserBracket";
 
 export enum BracketView {
     WinnerLoser,
@@ -36,7 +37,7 @@ export class BinaryTreeComponent implements OnInit {
 
     async ngOnInit(): Promise<void> {
         this.nbNodes = this.Players.length;
-        console.log(this.Players);
+        // console.log(this.Players);
         this.depth = Math.log2(this.nbNodes) / Math.log2(2);
         this.rounds = Math.log(this.nbNodes) / Math.log(2) - 1;
 
@@ -45,7 +46,7 @@ export class BinaryTreeComponent implements OnInit {
         // console.log(this.loserBracket)
 
 
-        await this.setBrackets();
+        // await this.setBrackets();
         await this.changeBracketView(this.view);
         console.log(this.winnerBracket);
     }
@@ -111,7 +112,7 @@ export class BinaryTreeComponent implements OnInit {
 
     async changeBracketView(view: BracketView) {
         this.view = view;
-        await this.setBrackets();
+        // await this.setBrackets();
         switch (this.view) {
             case BracketView.WinnerLoser:
                 this.displayWinnerLoserBracket();
@@ -138,6 +139,10 @@ export class BinaryTreeComponent implements OnInit {
 
     displayLoserBracket() {
         this.displayedBracket = this.doubleEliminationBracket?.getLoserBracket();
+    }
+
+    isLoserBracket(bracket: Bracket): boolean {
+        return bracket instanceof LoserBracket;
     }
 
 }

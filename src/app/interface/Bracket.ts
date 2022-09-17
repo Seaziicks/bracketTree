@@ -1,4 +1,5 @@
-import {DoubleBinaryLeaf, Player} from "./DoubleLeaf";
+import {DoubleBinaryLeaf} from "./DoubleLeaf";
+import {Player} from "./Player";
 // https://www.printyourbrackets.com/36seeded.html
 // https://www.printyourbrackets.com/pdfbrackets/36-team-portrait-seeded.pdf
 export class Bracket implements DoubleBinaryLeaf<Player> {
@@ -240,4 +241,57 @@ export class Bracket implements DoubleBinaryLeaf<Player> {
 
     }
 
+    maximumBacketWeight(): number {
+        if (!this.player1.isPlayerSet() && !this.player2.isPlayerSet() && !this.leftChild && !this.rightChild) {
+            return 0;
+        } else if (!this.player1.isPlayerSet() && !this.player2.isPlayerSet() && this.leftChild && !this.rightChild) {
+            return this.leftChild.maximumBacketWeight();
+        } else if (!this.player1.isPlayerSet() && !this.player2.isPlayerSet() && !this.leftChild && this.rightChild) {
+            return this.rightChild.maximumBacketWeight();
+        } else if (!this.player1.isPlayerSet() && !this.player2.isPlayerSet() && this.leftChild && this.rightChild) {
+            return Math.max(this.leftChild.maximumBacketWeight(), this.rightChild.maximumBacketWeight());
+        } else if (this.player1.isPlayerSet() && !this.player2.isPlayerSet() && this.rightChild) {
+            return Math.max(this.player1.getSeed(), this.rightChild.maximumBacketWeight());
+        } else if (!this.player1.isPlayerSet() && this.player2.isPlayerSet() && this.leftChild) {
+            return Math.max(this.leftChild.maximumBacketWeight(), this.player2.getSeed());
+        } else if (this.player1.isPlayerSet() && this.player2.isPlayerSet()) {
+            return Math.max(this.player1.getSeed(), this.player2.getSeed());
+        } else {
+            throw new Error("Seed incorrect pour le match " + this.player1.getName() + " et " + this.player2.getName());
+        }
+    }
+
+    minimumBacketWeight(): number {
+        if (!this.player1.isPlayerSet() && !this.player2.isPlayerSet() && !this.leftChild && !this.rightChild) {
+            return 0;
+        } else if (!this.player1.isPlayerSet() && !this.player2.isPlayerSet() && this.leftChild && !this.rightChild) {
+            return this.leftChild.minimumBacketWeight();
+        } else if (!this.player1.isPlayerSet() && !this.player2.isPlayerSet() && !this.leftChild && this.rightChild) {
+            return this.rightChild.minimumBacketWeight();
+        } else if (!this.player1.isPlayerSet() && !this.player2.isPlayerSet() && this.leftChild && this.rightChild) {
+            return Math.min(this.leftChild.minimumBacketWeight(), this.rightChild.minimumBacketWeight());
+        } else if (this.player1.isPlayerSet() && !this.player2.isPlayerSet() && this.rightChild) {
+            return Math.min(this.player1.getSeed(), this.rightChild.minimumBacketWeight());
+        } else if (!this.player1.isPlayerSet() && this.player2.isPlayerSet() && this.leftChild) {
+            return Math.min(this.leftChild.minimumBacketWeight(), this.player2.getSeed());
+        } else if (this.player1.isPlayerSet() && this.player2.isPlayerSet()) {
+            return Math.min(this.player1.getSeed(), this.player2.getSeed());
+        } else {
+            throw new Error("Seed incorrect pour le match " + this.player1.getName() + " et " + this.player2.getName());
+        }
+    }
+
+    getNbMatch(): number {
+        if (this.leftChild && this.rightChild) {
+            return 1 + this.leftChild.getNbMatch() + this.rightChild.getNbMatch();
+        } else if (this.leftChild && !this.rightChild) {
+            return 1 + this.leftChild.getNbMatch();
+        } else if (!this.leftChild && this.rightChild) {
+            return 1 + this.rightChild.getNbMatch();
+        } else if (!this.leftChild && !this.rightChild) {
+            return 1;
+        } else {
+            throw new Error("Nombre de match incorrect pour " + this.player1.getName() + " et " + this.player2.getName());
+        }
+    }
 }

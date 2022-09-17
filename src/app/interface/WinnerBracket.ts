@@ -24,19 +24,22 @@ export class WinnerBracket extends Bracket {
         }
     }
 
-    public addNextOpponnent(depth: number, added: boolean, nextOpponentSeed: number, bracketSeedOpponent: number): boolean {
+    public addNextOpponnent(depth: number, added: WinnerBracket | undefined, nextOpponentSeed: number, bracketSeedOpponent: number): WinnerBracket | undefined {
+        // console.log(depth < this.maxDepth);
+        // console.log("nextOpponentSeed", nextOpponentSeed);
+        // console.log("bracketSeedOpponent", bracketSeedOpponent);
         if (depth < this.maxDepth && !added) {
             if (this.player1.getSeed() === bracketSeedOpponent) {
                 if (this.leftChild === undefined) {
                     this.leftChild = new WinnerBracket(this.player1.clone(), Bracket.getFirstOpponent(this.player1, depth + 1), this, this.maxDepth);
                     this.player1.unsetPlayer();
-                    return true;
+                    return this.leftChild;
                 }
             } else if (this.player2.getSeed() === bracketSeedOpponent) {
                 if (this.rightChild === undefined) {
                     this.rightChild = new WinnerBracket(this.player2.clone(), Bracket.getFirstOpponent(this.player2, depth + 1), this, this.maxDepth);
                     this.player2.unsetPlayer();
-                    return true;
+                    return this.rightChild;
                 }
             }
             if (!added && this.leftChild !== undefined) {
@@ -45,15 +48,20 @@ export class WinnerBracket extends Bracket {
             if (!added && this.rightChild !== undefined) {
                 added = this.rightChild.addNextOpponnent(depth + 1, added, nextOpponentSeed, bracketSeedOpponent);
             }
+            // console.log("ok : ", added)
             return added;
         }
-        return false;
+        console.error("Ah rarf !");
+        return undefined;
     }
 
-    public addNextOpponentInterface() {
+    public addNextOpponentInterface(nbPlayers: number, i: number): WinnerBracket | undefined {
         const nextOpponentSeed = this.getNextOpponentSeed()
         // console.log(Bracket.getFirstOpponentSeed(nextOpponentSeed, this.maxDepth));
         // console.log(nextOpponentSeed);
-        this.addNextOpponnent(0, false, nextOpponentSeed, Bracket.getFirstOpponentSeed(nextOpponentSeed, this.maxDepth));
+        this.maxDepth = Math.floor(Math.log2(nbPlayers) / Math.log2(2));
+        // console.log(this.maxDepth);
+        const depth = Math.floor(Math.log2(i) / Math.log2(2));
+        return this.addNextOpponnent(0, undefined, nextOpponentSeed, Bracket.getFirstOpponentSeed(nextOpponentSeed, depth));
     }
 }

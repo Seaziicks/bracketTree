@@ -56,6 +56,7 @@
                         <div class="playerWrapper">
                             <div class="player player1" [class.isWinner]="node.winner === node.player1">
                                 <app-tree-player-bis [player]="node.player1"
+                                                     [match]="this.isLoserBracket(node) ? node.waitingMatchLeft: undefined"
                                                      [canWin]="node.player1.isPlayerSet() && node.player2.isPlayerSet()"
                                                      [isHighSeeded]="true"
                                                      (playerWonEvent)="this.setWinner(node, $event)"></app-tree-player-bis>
@@ -63,6 +64,7 @@
                             <span class="vertical-line"></span>
                             <div class="player player2" [class.isWinner]="node.winner === node.player2">
                                 <app-tree-player-bis [player]="node.player2"
+                                                     [match]="this.isLoserBracket(node) ? node.waitingMatchRight : undefined"
                                                      [canWin]="node.player1.isPlayerSet() && node.player2.isPlayerSet()"
                                                      [isHighSeeded]="false"
                                                      (playerWonEvent)="this.setWinner(node, $event)"></app-tree-player-bis>

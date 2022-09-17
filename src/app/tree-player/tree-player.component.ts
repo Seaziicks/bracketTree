@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Player} from "../interface/Player";
+import {WinnerBracket} from "../interface/WinnerBracket";
 
 @Component({
   selector: 'app-tree-player-bis',
@@ -9,6 +10,7 @@ import {Player} from "../interface/Player";
 export class TreePlayerComponent implements OnInit {
 
   @Input() player: Player | undefined;
+  @Input() match : WinnerBracket | undefined;
   @Input() canWin: boolean = false;
   @Input() isHighSeeded: boolean = false;
   @Output() playerWonEvent = new EventEmitter<Player>();
