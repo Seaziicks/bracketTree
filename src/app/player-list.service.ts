@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Player} from "./interface/DoubleLeaf";
+import {Player} from "./interface/Player";
 
 @Injectable({
     providedIn: 'root'

@@ -1,5 +1,5 @@
 import {Bracket} from "./Bracket";
-import {Player} from "./DoubleLeaf";
+import {Player} from "./Player";
 
 export class WinnerBracket extends Bracket {
 

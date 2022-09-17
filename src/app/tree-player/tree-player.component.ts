@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Player} from "../interface/DoubleLeaf";
+import {Player} from "../interface/Player";
 
 @Component({
   selector: 'app-tree-player-bis',

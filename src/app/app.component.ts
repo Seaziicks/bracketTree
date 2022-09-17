@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {Player} from "./interface/DoubleLeaf";
+import {Player} from "./interface/Player";
 import {BinaryTreeComponent} from "./binary-tree/binary-tree.component";
 import {PlayerListService} from "./player-list.service";
 
