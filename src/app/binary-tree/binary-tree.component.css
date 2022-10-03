@@ -22,7 +22,10 @@
     text-align: center;
     list-style-type: none;
     position: relative;
-    padding: 0.5em 1em 0.5em 0;
+    /*padding: 0.5em 1em 0.5em 0;*/
+    padding-right: 1em;
+    padding-top: 0.1em;
+    padding-bottom: 0.05em;
     display: flex;
     flex-flow: row-reverse;
     align-items: center;
@@ -131,7 +134,7 @@
 
 .node {
     min-width: 150px;
-    min-height: 75px;
+    min-height: 60px;
     cursor: default;
     /*display: inline-block;*/
     display: flex;
@@ -196,11 +199,11 @@ div.tree .player {
 }
 
 .tree ul.emptyLeftChild > li {
-    margin-top: 45px;
+    margin-top: 23px;
 }
 
 .tree ul.emptyRightChild > li {
-    margin-bottom: 45px;
+    margin-bottom: 23px;
 }
 
 .tree ul.emptyLeftChild > li::before, .tree ul.emptyRightChild > li::before {
@@ -215,7 +218,7 @@ div.tree .player {
 .tree ul.emptyLeftChild > li::before {
     border-bottom: 1px solid #ccc;
     border-radius: 0 0 5px 0;
-    height: 22.5px;
+    height: 11px;
     bottom: 50%;
     top: unset;
 }
@@ -232,6 +235,7 @@ div.tree .player {
     align-self: center;
     color: wheat;
     margin-right: 3px;
+    min-width: 18px;
 }
 
 .buttonsWrapper {
