@@ -2,6 +2,7 @@ import {Bracket} from "./Bracket";
 import {Player} from "./Player";
 import {WinnerBracket} from "./WinnerBracket";
 import {LoserBracket} from "./LoserBracket";
+import {errorObject} from "rxjs/internal-compatibility";
 
 // https://challonge.com/fr/fe6of1v2
 export class DoubleEliminationBracket {
@@ -88,22 +89,19 @@ export class DoubleEliminationBracket {
                  * Se concentrer uniquement sur l'arbre loser, et voir quels matchs sont affectes.
                  * Les problemes apparaissent pour chaque 2^n, avec un melange incomprehensible, que j'ai essaye de mimer jusqu'a 32.
                  * Et encore, c'est pas vraiment fait, mais disons que pour l'instant, ça me convient !
+                 *
+                 * Journal de bord, jours ... je ne sais plus quel jour on est ...
+                 * Apres moult observations, j'ai reussi a mimer jusqu'a 127.
+                 * Je pourrais le faire pour 255, mais il faudrait que je m'investisse d'avantage.
+                 * Le cote rassurant, c'est qu'un patern se dessine, qui semble facilement factorisable !
+                 * Mais la, franchement, flemme ....
                  */
                 if (lastWinnerPlaced &&
-                    Math.floor(Math.log2(lastWinnerPlaced.player2.getSeed()) / Math.log2(2)) === Math.log2(lastWinnerPlaced.player2.getSeed()) / Math.log2(2) &&
-                    loserBracket.rightChild && Math.log2(lastWinnerPlaced.player2.getSeed()) / Math.log2(2) !== 2) {
+                    Math.floor(Math.log2(lastWinnerPlaced.player2.getSeed()) / Math.log2(2)) === Math.log2(lastWinnerPlaced.player2.getSeed()) / Math.log2(2)
+                    && Math.log2(lastWinnerPlaced.player2.getSeed()) / Math.log2(2) !== 2) {
                     console.log((Math.log2(lastWinnerPlaced.player2.getSeed()) / Math.log2(2) - 2));
-                    console.warn("Attention, on a swap !");
-                    for (let i = 0; i < (Math.log2(lastWinnerPlaced.player2.getSeed()) / Math.log2(2) - 2); i++) {
-                        console.log(i);
-                        for (let layer of loserBracket.getSubNodesAtSpecificDepth(1, (i + 1) * 2)) {
-                            console.log(layer);
-                            if (layer instanceof LoserBracket) {
-                                layer.swapChildren();
-                            }
-                        }
-                    }
-                    // loserBracket.rightChild.swapChildren();
+                    console.warn("Coup de baguette magique !");
+                    this.makeMagicHappen(loserBracket, i);
                 }
                 lastWinnerPlaced = winnerBracket.addNextOpponentInterface(this.nbPlayer, i);
                 // console.log(lastWinnerPlaced);
@@ -275,6 +273,86 @@ export class DoubleEliminationBracket {
         else
             finalMatch.matchNumber = 1
         return finalMatch;
+    }
+
+    makeMagicHappen(loserBracket: LoserBracket, index: number) {
+        let layers;
+        switch (index) {
+            case 2:
+                break;
+            case 4:
+                break;
+            case 8:
+                for (let index = 0; index < 1; index++) {
+                    layers = loserBracket.getSubNodesAtSpecificDepth(1, ((index + 1) * 2));
+                    for (let layer of layers) {
+                        if (layer instanceof LoserBracket) {
+                            layer.swapChildren();
+                        }
+                    }
+                }
+                break;
+            case 16:
+                for (let index = 0; index < 2; index++) {
+                    layers = loserBracket.getSubNodesAtSpecificDepth(1, ((index + 1) * 2));
+                    for (let layer of layers) {
+                        if (layer instanceof LoserBracket) {
+                            layer.swapChildren();
+                            if (index === 1) {
+                                this.swapMatchs(layer.getSubNodesAtSpecificDepth(1, 2));
+                            }
+                        }
+                    }
+                }
+                break;
+            case 32:
+                for (let index = 0; index < 3; index++) {
+                    layers = loserBracket.getSubNodesAtSpecificDepth(1, ((index + 1) * 2));
+                    for (let layer of layers) {
+                        if (layer instanceof LoserBracket) {
+                            layer.swapChildren();
+                            if (index === 1) {
+                                this.swapMatchs(layer.getSubNodesAtSpecificDepth(1, 4));
+                            }
+                        }
+                    }
+                }
+                break;
+            case 64:
+                for (let index = 0; index < 4; index++) {
+                    layers = loserBracket.getSubNodesAtSpecificDepth(1, ((index + 1) * 2));
+                    for (let layer of layers) {
+                        if (layer instanceof LoserBracket) {
+                            layer.swapChildren();
+                            if (index === 1) {
+                                this.swapMatchs(layer.getSubNodesAtSpecificDepth(1, 2));
+                                this.swapMatchs(layer.getSubNodesAtSpecificDepth(1, 6));
+                            }
+                        }
+                    }
+                }
+                break;
+            case 128:
+                throw new Error("Comportement encore non observé, je ne peux pas construire d'arbre aussi grand.")
+                // break;
+        }
+
+    }
+
+    swapMatchs(brackets: Bracket[]) {
+       if (brackets.length % 2 !== 0)
+           throw new Error("Nombre impaire de bracket, pas normal, swap impossible");
+       for (let i = 0; i < brackets.length / 2; i++) {
+           const bracket = brackets[i];
+           const bracketToSwapWith = brackets[brackets.length - i - 1];
+           if (bracket instanceof LoserBracket && bracketToSwapWith instanceof LoserBracket) {
+               const transition = bracket.waitingMatchLeft;
+               bracket.waitingMatchLeft = bracketToSwapWith.waitingMatchLeft;
+               bracketToSwapWith.waitingMatchLeft = transition;
+           } else {
+               throw new Error("Un des bracket n'est pas un loser Bracket, problème !");
+           }
+       }
     }
 
 }
