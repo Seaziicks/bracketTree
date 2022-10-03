@@ -2,7 +2,6 @@ import {Bracket} from "./Bracket";
 import {Player} from "./Player";
 import {WinnerBracket} from "./WinnerBracket";
 import {LoserBracket} from "./LoserBracket";
-import {errorObject} from "rxjs/internal-compatibility";
 
 // https://challonge.com/fr/fe6of1v2
 export class DoubleEliminationBracket {
@@ -250,9 +249,10 @@ export class DoubleEliminationBracket {
     }
 
     // Pas fini, car la construction de l'arbre loser ne marche pas encore ...
-    hasEmptyLeaf(bracket: Bracket) {
-        return true;
-    }
+    // Pas besoin finalement ...
+    // hasEmptyLeaf(bracket: Bracket) {
+    //     return true;
+    // }
 
     getWinnerBracket(): WinnerBracket {
         return this.winnerBracket;
