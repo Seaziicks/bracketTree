@@ -26,7 +26,7 @@ export class BinaryTreeComponent implements OnInit {
     winnerBracket: Bracket | undefined;
     maxBracketDepth = 0;
     BracketView = BracketView;
-    view: BracketView = BracketView.Loser;
+    view: BracketView = BracketView.WinnerLoser;
 
     doubleEliminationBracket: DoubleEliminationBracket | undefined;
 
@@ -112,7 +112,7 @@ export class BinaryTreeComponent implements OnInit {
 
     async changeBracketView(view: BracketView) {
         this.view = view;
-        // await this.setBrackets();
+        await this.setBrackets();
         switch (this.view) {
             case BracketView.WinnerLoser:
                 this.displayWinnerLoserBracket();
